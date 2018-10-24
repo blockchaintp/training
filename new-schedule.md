@@ -1,4 +1,4 @@
-##Day 1
+## Day 1
 
 09:30-10:00 Intros and Objectives
 
@@ -52,7 +52,7 @@ Use XO Transaction Family reference implementation to highlight the key consider
  * update the settings to allow for xo-tp 1.1
 
 
-##Day 2
+## Day 2
 
 09:30-10:00 Day 1 Recap
 
