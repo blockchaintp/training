@@ -5,6 +5,22 @@ Resources to deliver training.
  * [eventbright page](https://www.eventbrite.com/e/hyperledger-sawtooth-blockchain-application-developer-workshop-tickets-51567876908)
  * [published schedule](https://s3.eu-west-2.amazonaws.com/btp-website-downloads/Workshops/BTP+Hyperledger+Sawtooth+Application+Developer+Workshop+-+Singapore+Fintech+Festival.pdf)
 
+## location
+
+```
+LaunchPad @ one-North
+Blk 71 Ayer Rajah Crescent, #04-12
+Singapore, 139951
+Singapore
+```
+
+## pre-requisites
+
+All participants should be devops engineers or application developers familiar with the principles of client/server development and object oriented programming. A working knowledge of Javascript or Python would be very helpful.
+
+Participants should bring a laptop ideally installed with Docker and Docker compose.
+
+
 ## schedule
 
 **Day 1 - November 15th**
