@@ -1,7 +1,8 @@
-version: "3"
+version: "3.5"
 
 networks:
   sawtooth-dev:
+    name: sawtooth-dev
 
 services:
 
@@ -57,6 +58,32 @@ services:
           --bind component:tcp://eth0:4004 \
           --bind network:tcp://eth0:8800 \
         \""
+
+  seth-tp:
+    image: blockchaintp/sawtooth-seth-tp:1.0.5
+    container_name: sawtooth-seth-tp
+    depends_on:
+      - validator
+    networks:
+      - sawtooth-dev
+    expose:
+      - 4005
+    ports:
+      - "4005:4005"
+    entrypoint: seth-tp -v --connect tcp://validator:4004 --listen tcp://0.0.0.0:4005
+
+  #seth-rpc:
+  #  image: blockchaintp/sawtooth-seth-rpc:1.0.5
+  #  container_name: sawtooth-seth-rpc
+  #  depends_on:
+  #    - validator
+  #  networks:
+  #    - sawtooth-dev
+  #  expose:
+  #    - 3030
+  #  ports:
+  #    - "3030:3030"
+  #  entrypoint: seth-rpc -vv --bind 0.0.0.0:3030 --connect tcp://validator:4004 --process tcp://0.0.0.0:4005
 
   # gives a REST interface to the validator so you can write programs that query state and submit new transactions
   rest-api:
