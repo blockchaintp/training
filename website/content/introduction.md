@@ -3,9 +3,20 @@ title: Hello world
 order: 1
 ---
 
-This is a page in Markdown with some frontmatter
+This is an introduction and I am testing.
 
-```
+**here is some bold text**
+
+ * here
+ * is
+ * a
+ * list
+
+
+Here is after a list
+
+
+```javascript
 console.log('here is some code')
 ```
 

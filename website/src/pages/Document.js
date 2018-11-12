@@ -14,6 +14,7 @@ import snackbarModule from '@nocodesites/redux-modules/lib/modules/snackbar'
 import styles from '../styles/document'
 import selectors from '../selectors'
 
+import Markdown from '../components/Markdown'
 import BottomNav from '../components/BottomNav'
 
 @connectStore({
@@ -42,8 +43,9 @@ class DocumentPage extends React.Component {
       <div className={ classes.root }>
         <Paper className={ classes.paper }>
           <Typography variant="title" className={ classes.pageHeader }>{ page.meta.title }</Typography>
-          <div className={ classes.content } dangerouslySetInnerHTML={{__html: page.body}}>
-          </div>
+          <Markdown
+            content={ page.body }
+          />
           <BottomNav
             page={ page }
             pages={ pages }

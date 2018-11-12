@@ -62,7 +62,7 @@ class SideMenu extends React.Component {
         key={ i }
         onClick={ () => this.openPage(page.url) }
       >
-        <ListItemText primary={ page.meta.title } />
+        <ListItemText primary={ `${page.meta.order}. ${page.meta.title}` } />
       </ListItem>
     )))
 
