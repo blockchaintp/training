@@ -14,14 +14,18 @@ import snackbarModule from '@nocodesites/redux-modules/lib/modules/snackbar'
 import styles from '../styles/document'
 import selectors from '../selectors'
 
+import BottomNav from '../components/BottomNav'
+
 @connectStore({
   snackbar: snackbarModule,
 })
 @connect((state, ownProps) => {
   const route = ownProps.route
   const page = selectors.item(state, 'page', route.pageId)
+  const pages = selectors.pages(state)
   return {
     page,
+    pages,
   }
 })
 class DocumentPage extends React.Component {
@@ -31,6 +35,7 @@ class DocumentPage extends React.Component {
     const {
       classes,
       page,
+      pages,
     } = this.props
 
     return (
@@ -39,6 +44,10 @@ class DocumentPage extends React.Component {
           <Typography variant="title" className={ classes.pageHeader }>{ page.meta.title }</Typography>
           <div className={ classes.content } dangerouslySetInnerHTML={{__html: page.body}}>
           </div>
+          <BottomNav
+            page={ page }
+            pages={ pages }
+          />
         </Paper>
       </div>
     )

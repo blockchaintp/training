@@ -1,5 +1,5 @@
 ---
-title: Hello world 2
+title: Some other page
 order: 2
 ---
 

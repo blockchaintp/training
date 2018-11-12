@@ -50,15 +50,6 @@ class HomePage extends React.Component {
         <Paper className={ classes.paper }>
           <Typography variant="title" className={ classes.pageHeader }>Pages</Typography>
           <List component="nav">
-            <ListItem 
-              button
-              onClick={ () => this.openPage('/') }
-            >
-              <ListItemIcon>
-                <IconDescription />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
             {
               pages.map((page, i) => {
                 return (
