@@ -7,8 +7,10 @@ import { withStyles } from '@material-ui/core/styles'
 
 import ReactMarkdown from 'react-markdown'
 
-import CodeBlock from './CodeBlock'
+import MarkdownCodeBlock from './MarkdownCodeBlock'
+import MarkdownBlockQuote from './MarkdownBlockQuote'
 import MarkdownLink from './MarkdownLink'
+import MarkdownInlineCode from './MarkdownInlineCode'
 import styles from '../styles/markdown'
 
 class Markdown extends React.Component {
@@ -25,8 +27,10 @@ class Markdown extends React.Component {
           source={content}
           escapeHtml={false}
           renderers={{
-            code: CodeBlock,
+            code: MarkdownCodeBlock,
             link: MarkdownLink,
+            blockquote: MarkdownBlockQuote,
+            inlineCode: MarkdownInlineCode,
           }}
         />
       </div>

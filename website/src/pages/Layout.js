@@ -76,8 +76,8 @@ class Layout extends React.Component {
           <meta name="viewport" content="user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css" />
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+          <link rel="stylesheet" href="/highlight/styles/monokai-sublime.css" />
+          <script src="/highlight/highlight.pack.js"></script>
           <link rel="icon" type="image/png" href="/images/logo.png" />
         </Helmet>
         <AppBar 

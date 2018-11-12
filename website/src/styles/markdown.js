@@ -12,11 +12,23 @@ const styles = theme => {
     pre: {
       border: '1px dotted #999',
       overflow: 'auto',
-      padding: '20px',
+      '& > code': {
+        padding: '20px',  
+      },
     },
     copyContainer: {
       textAlign: 'right',
       paddingTop: '20px',
+    },
+    blockquote: {
+      backgroundColor: '#f5f5f5',
+      marginLeft: '50px',
+      border: '1px dotted #999',
+      borderLeft: '5px solid #3D4797',
+      padding: '20px',
+    },
+    inlineCode: {
+      color: '#D81C38',
     }
   }
 }

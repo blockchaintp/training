@@ -52,7 +52,7 @@ docker run --rm -ti busybox echo 'hello sawtooth'
 
 You might see Docker downloading image layers.  At the end of the output for this command you should see:
 
-```
+```bash
 hello sawtooth
 ```
 
