@@ -33,6 +33,87 @@
  * listening for events
  * network
 
+### state management
+
+ * simple binary encoded string (e.g. CSV)
+ * BSON
+ * ProtoBufs
+
+### address management
+
+ * prefix
+ * choosing address based on action
+
+### transations / batches / batchlist
+
+ * how the atomic unit is a batch
+ * transactions can be mixed in a batch
+
+### start xo
+
+```bash
+docker run -d \
+  --name xo-demo \
+  -p 8084:80 \
+  --net sawtooth-dev \
+  -e REST_API_HOSTNAME=rest-api \
+  -e REST_API_PORT=8008 xo-demo
+```
+
+### start seth cli
+
+```bash
+docker run -ti --rm --net sawtooth-dev --entrypoint bash blockchaintp/sawtooth-seth-cli:1.0.5
+```
+
+```bash
+seth init http://rest-api:8008
+```
+
+https://sawtooth.hyperledger.org/docs/seth/releases/latest/getting_started.html#creating-an-account
+
+
+https://sawtooth.hyperledger.org/docs/seth/releases/latest/permissions.html
+
+
+Run the seth CLI:
+
+```
+docker run -ti --rm --net sawtooth-dev --entrypoint bash blockchaintp/sawtooth-seth-cli:1.0.5
+```
+
+mount `~/.sawtooth/keys` to keep all the files
+
+
+```
+    1  seth init http://rest-api:8008
+    2  openssl ecparam -genkey -name secp256k1 | openssl ec -out key-file.pem -aes128
+    3  ls -la
+    4  cat key-file.pem
+    5  seth account import key-file.pem binocarlos
+    6  seth account create --nonce=0 --wait binocarlos
+    7  seth show account 51d85ea883a51fce4428970960f158e72fea88f1
+    8  solc
+    9  vi
+   10  apt-get update
+   11  nano
+   12  apt-get update
+   13  cat > contract.sol
+   14  cat contract.sol
+   15  solc --bin contract.sol
+   16  #seth contract create --wait binocarlos
+   17  ls -la
+   18  #seth contract create --wait binocarlos --help
+   19  seth contract create --wait binocarlos --help
+   20  seth contract create --wait binocarlos 608060405234801561001057600080fd5b50610239806100206000396000f300608060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680631ab06ee514610067578063812600df1461009e5780639507d39a146100cb578063c20efb901461010c575b600080fd5b34801561007357600080fd5b5061009c6004803603810190808035906020019092919080359060200190929190505050610139565b005b3480156100aa57600080fd5b506100c960048036038101908080359060200190929190505050610193565b005b3480156100d757600080fd5b506100f6600480360381019080803590602001909291905050506101c2565b6040518082815260200191505060405180910390f35b34801561011857600080fd5b50610137600480360381019080803590602001909291905050506101de565b005b80600080848152602001908152602001600020819055507f545b620a3000f6303b158b321f06b4e95e28a27d70aecac8c6bdac4f48a9f6b38282604051808381526020018281526020019250505060405180910390a15050565b600160008083815260200190815260200160002054016000808381526020019081526020016000208190555050565b6000806000838152602001908152602001600020549050919050565b6001600080838152602001908152602001600020540360008083815260200190815260200160002081905550505600a165627a7a723058205ab962e51ffee3e3271617dede2567dcfddba0337b30d186102c2402ebdab5070029
+   21  seth show account 92768855faf62cb2262a8d992f0f39fbb8678d37
+   22  node
+   23  seth contract call --wait binocarlos 92768855faf62cb2262a8d992f0f39fbb8678d37 1ab06ee50000000000000000000000000000000000000000000000000000000000000013000000000000000000000000000000000000000000000000000000000000002a
+   24  seth show receipt 8c20337bd6085da61b0758fb45facba15ac54399387d8a54c1097b20ca4fc2413904ccf94ca26bc610e740e34c4aa7e5c6b51ea9354bf75a49b2879a8359e262
+   25  history
+```
+
+
 ## Hyperledger Sawtooth Overview
 
  * blockchain basics
@@ -140,3 +221,374 @@ Show how standard Ethereum developer tools such as truffle and remix can be used
 16:00-17:30 Running Sawtooth in Production
 
 Best practices & benefits of Sextant over DIY approach
+
+
+
+## booting development stack
+
+```
+cd sawtooth-core/docker/compose
+git checkout btp-releases/1.0.5
+docker-compose -f sawtooth-default-go.yaml up
+```
+
+Then we want to enable the xo tp:
+
+```
+docker exec -it sawtooth-validator-default sawset proposal create \
+  --url http://rest-api:8008 \
+  --key /root/.sawtooth/keys/my_key.priv \
+  sawtooth.validator.transaction_families='[{"family": "intkey", "version": "1.0"}, {"family":"sawtooth_settings", "version":"1.0"}, {"family":"xo", "version":"1.0"}]'
+docker exec -it sawtooth-validator-default sawtooth settings list --url http://rest-api:8008
+```
+
+List games:
+
+```
+docker exec -ti sawtooth-shell-default xo list --url http://rest-api:8008
+```
+
+List games curl:
+
+```
+docker exec -ti sawtooth-shell-default curl http://rest-api:8008/state?address=5b7349
+```
+
+## state
+
+ * [merkle hashes](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/global_state.html#merkle-hashes)
+ * [radix addresses](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/global_state.html#radix-addresses)
+
+## architecture
+
+ * [transactions and batches](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/transactions_and_batches.html#transactions-and-batches)
+ * [transaction data structure](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/transactions_and_batches.html#transaction-data-structure)
+ * [journal](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#journal)
+ * [blockstore](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-blockstore)
+ * [blockcache](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-blockcache)
+ * [completer](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-completer)
+ * [consensus](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-consensus-interface)
+ * [chain controller](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-chaincontroller)
+ * [block publisher](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/journal.html#the-blockpublisher)
+ * [genesis operation](https://sawtooth.hyperledger.org/docs/core/releases/1.0/architecture/journal.html#genesis-operation)
+ * [transaction scheduling](https://sawtooth.hyperledger.org/docs/core/releases/1.0/architecture/scheduling.html#transaction-scheduling)
+ * [rest api](https://sawtooth.hyperledger.org/docs/core/releases/1.0/architecture/rest_api.html#rest-api)
+ 
+
+## general
+
+ * [SGX](https://en.wikipedia.org/wiki/Software_Guard_Extensions)
+ * [poet](https://sawtooth.hyperledger.org/docs/core/releases/1.0/architecture/poet.html#poet-1-0-specification)
+ * [cli commands](https://sawtooth.hyperledger.org/docs/core/releases/1.0/cli.html)
+
+## application best practices notes
+
+ * [data structures must always enforce ordered serialization](https://sawtooth.hyperledger.org/docs/core/releases/latest/architecture/global_state.html#serialization-concerns)
+
+
+## tp specs
+
+ * [overview](https://sawtooth.hyperledger.org/docs/core/releases/1.0/transaction_family_specifications.html#transaction-family-specifications)
+
+
+## core concepts
+
+
+### application components
+
+To write any kind of application you need to consider:
+
+ * state serialization
+   * how is the state going to be serialized on the chain
+
+ * addressing - how the state addresses will be formed based on the key for your state entry
+   * prepend with tp namespace
+   * rest of address is dot delimeted nodes based on what the key represents
+
+ * having a transaction submission wrapper
+   * any interaction with your TP that modifies state will need to create a transaction
+   * this will be the same work apart from:
+     * addresses
+     * payload
+   * you would have some kind of client wrapper for these calls
+
+
+### creating a transaction
+
+ * create the payload bytes
+ * formulate the address for the state object being modified
+ * create a new header with:
+   * signer_public_key
+   * family_name, family_version
+   * inputs, outputs, dependencies (which addresses are used - this informs the scheduler)
+   * payload_sha512
+   * batcher_public_key
+   * nonce
+ * create a transaction header signature
+ * create the transaction with
+   * header
+   * payload
+   * header_signature
+ * create a new batch header with
+   * signer_public_key
+   * transaction_ids -> header_signature from transactions
+ * create a batch header signature
+ * create a batch with
+   * header
+   * transactions
+   * header_signature
+ * serialize the batch list
+ * POST http://hostname/batches
+
+### reading state
+
+```
+curl http://rest-api:8008/state?address=5b7349
+```
+
+Where `5b7349` is the prefix for the tp
+
+You can have any amount of bytes in the address and it will show all state below that prefix
+
+## really useful commands
+
+#### list transactions
+
+```
+sawtooth transaction list --url http://rest-api:8008
+```
+
+#### view state
+
+```
+sawtooth state list --format csv --url http://rest-api:8008
+```
+
+## commands
+
+#### curl blocks
+
+```
+curl http://localhost:8008/blocks
+```
+
+#### login to the shell container
+
+```
+docker exec -ti sawtooth-shell-default bash
+```
+
+#### create a intkey batch
+
+```
+intkey create_batch --count 10 --key-count 5
+```
+
+#### submit the batch
+
+```
+sawtooth batch submit -f batches.intkey --url http://rest-api:8008
+```
+
+#### list the blocks
+
+```
+sawtooth block list --url http://rest-api:8008
+```
+
+#### view single block
+
+```
+sawtooth block show --url http://rest-api:8008 {BLOCK_ID}
+```
+
+#### list nodes in merkle tree
+
+```
+sawtooth state list --url http://rest-api:8008
+```
+
+#### view state at merkle tree address
+
+```
+sawtooth state show --url http://rest-api:8008 {STATE_ADDRESS}
+```
+
+#### list settings
+
+```
+sawtooth settings list --url http://rest-api:8008
+```
+
+#### activate transaction families
+
+```
+docker exec -it sawtooth-validator-default bash
+sawset proposal create \
+  --url http://rest-api:8008 \
+  --key /root/.sawtooth/keys/my_key.priv \
+  sawtooth.validator.transaction_families='[{"family": "intkey", "version": "1.0"}, {"family":"sawtooth_settings", "version":"1.0"}, {"family":"xo", "version":"1.0"}]'
+sawtooth settings list --url http://rest-api:8008
+```
+
+## tricks
+
+### docker image for python env
+
+```
+docker build -t python -f dockerfiles.dockerfile
+docker run -ti --rm python bash
+python3
+```
+
+### basic python repl to calcualte hashes
+
+```
+docker run --rm -ti ubuntu:bionic bash
+apt-get update
+apt-get install -y python
+python
+>>> import hashlib
+>>> hashlib.sha512('intkey'.encode('utf-8')).hexdigest()[0:6]
+```
+
+### manual signing of transaction
+
+#### environment
+
+```
+docker run --rm -ti ubuntu:bionic bash
+apt-get update -y
+apt-get install -y python3 python3-pip pkg-config autoconf libtool
+pip3 install secp256k1 cbor
+python3
+```
+
+#### create keys
+
+```
+import secp256k1
+key_handler = secp256k1.PrivateKey()
+private_key_bytes = key_handler.private_key
+public_key_bytes = key_handler.pubkey.serialize()
+public_key_hex = public_key_bytes.hex()
+```
+
+#### create payload
+
+```
+import cbor
+payload = {
+    'Verb': 'set',
+    'Name': 'foo',
+    'Value': 42}
+payload_bytes = cbor.dumps(payload)
+from hashlib import sha512
+payload_sha512 = sha512(payload_bytes).hexdigest()
+```
+
+#### create transaction header
+
+```
+from random import randint
+from sawtooth_sdk.protobuf.transaction_pb2 import TransactionHeader
+
+txn_header = TransactionHeader(
+    batcher_public_key=public_key_hex,
+    # If we had any dependencies, this is what it might look like:
+    # dependencies=['540a6803971d1880ec73a96cb97815a95d374cbad5d865925e5aa0432fcf1931539afe10310c122c5eaae15df61236079abbf4f258889359c4d175516934484a'],
+    family_name='intkey',
+    family_version='1.0',
+    inputs=['1cf1266e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7'],
+    nonce=str(randint(0, 1000000000)),
+    outputs=['1cf1266e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7'],
+    payload_sha512=payload_sha512,
+    signer_public_key=public_key_hex)
+
+txn_header_bytes = txn_header.SerializeToString()
+```
+
+### sign header
+
+```
+key_handler = secp256k1.PrivateKey(private_key_bytes)
+
+# ecdsa_sign automatically generates a SHA-256 hash of the header bytes
+txn_signature = key_handler.ecdsa_sign(txn_header_bytes)
+txn_signature_bytes = key_handler.ecdsa_serialize_compact(txn_signature)
+txn_signature_hex = txn_signature_bytes.hex()
+```
+
+### create transaction
+
+```
+from sawtooth_sdk.protobuf.transaction_pb2 import Transaction
+
+txn = Transaction(
+    header=txn_header_bytes,
+    header_signature=txn_signature_hex,
+    payload=payload_bytes)
+```
+
+### create batch header
+
+```
+from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
+
+batch_header = BatchHeader(
+    signer_public_key=public_key_hex,
+    transaction_ids=[txn.header_signature])
+
+batch_header_bytes = batch_header.SerializeToString()
+```
+
+### sign batch header
+
+```
+batch_signature = key_handler.ecdsa_sign(batch_header_bytes)
+
+batch_signature_bytes = key_handler.ecdsa_serialize_compact(batch_signature)
+
+batch_signature_hex = batch_signature_bytes.hex()
+```
+
+### create batch
+
+```
+from sawtooth_sdk.protobuf.batch_pb2 import Batch
+
+batch = Batch(
+    header=batch_header_bytes,
+    header_signature=batch_signature_hex,
+    transactions=[txn])
+
+```
+
+### encode batch
+
+```
+from sawtooth_sdk.protobuf.batch_pb2 import BatchList
+
+batch_list = BatchList(batches=[batch])
+batch_bytes = batch_list.SerializeToString()
+```
+
+### submit batch
+
+```
+import urllib.request
+from urllib.error import HTTPError
+
+try:
+    request = urllib.request.Request(
+        'http://rest.api.domain/batches',
+        batch_list_bytes,
+        method='POST',
+        headers={'Content-Type': 'application/octet-stream'})
+    response = urllib.request.urlopen(request)
+
+except HTTPError as e:
+    response = e.file
+
+```
+
