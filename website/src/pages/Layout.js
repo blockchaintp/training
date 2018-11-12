@@ -29,19 +29,16 @@ import AppBar from '../components/AppBar'
 })
 @connect((state, ownProps) => {
   const pages = selectors.pages(state)
+  const pathname = selectors.pathname(state)
   return {
     pages,
+    pathname,
   }
 })
 class Layout extends React.Component {
 
   state = {
     drawerOpen: false,
-  }
-
-  constructor(props) {
-    super(props);
-    this.contentRef = React.createRef()
   }
 
   toggleDrawer = (open) => {
@@ -52,7 +49,7 @@ class Layout extends React.Component {
 
   componentDidUpdate(oldProps) {
     if(oldProps.pathname != this.props.pathname) {
-      this.contentRef.current.scrollTop = 0
+      window.scrollTo(0,0)
     }
   }
 
@@ -84,7 +81,7 @@ class Layout extends React.Component {
           pages={ pages }
         />
         <div className={ classes.main }>
-          <main className={ classes.content } ref={ this.contentRef }>
+          <main className={ classes.content }>
             { children }
           </main>
         </div>
