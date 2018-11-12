@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 
 import snackbarModule from '@nocodesites/redux-modules/lib/modules/snackbar'
 
@@ -33,10 +34,12 @@ class DocumentPage extends React.Component {
     } = this.props
 
     return (
-      <div className="document-container">
-        <Typography variant="title" className={ classes.pageHeader }>Title</Typography>
-        <div dangerouslySetInnerHTML={{__html: doc.html}}>
-        </div>
+      <div className={ classes.root }>
+        <Paper className={ classes.paper }>
+          <Typography variant="title" className={ classes.pageHeader }>Title</Typography>
+          <div className={ classes.content } dangerouslySetInnerHTML={{__html: doc.html}}>
+          </div>
+        </Paper>
       </div>
     )
   }

@@ -80,9 +80,7 @@ class Layout extends React.Component {
         />
         <div className={ classes.main }>
           <main className={ classes.content } ref={ this.contentRef }>
-            <div className={ classes.contentChildren }>
-              { children }
-            </div>
+            { children }
           </main>
         </div>
         <div>
