@@ -44,9 +44,7 @@ class CodeBlock extends React.Component {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={10}>
           <pre className={ classes.pre }>
-            <code ref={this.setRef} className={`language-${this.props.language}`}>
-              {this.props.value}
-            </code>
+            <code ref={this.setRef} className={`language-${this.props.language}`}>{this.props.value}</code>
           </pre>
         </Grid>
         <Grid item xs={12} sm={2}>

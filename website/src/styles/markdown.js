@@ -11,10 +11,8 @@ const styles = theme => {
     },
     pre: {
       border: '1px dotted #999',
-      '& > code': {
-        padding: '20px',
-      },
       overflow: 'auto',
+      padding: '20px',
     },
     copyContainer: {
       textAlign: 'right',

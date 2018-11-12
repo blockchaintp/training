@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles'
 import ReactMarkdown from 'react-markdown'
 
 import CodeBlock from './CodeBlock'
+import MarkdownLink from './MarkdownLink'
 import styles from '../styles/markdown'
 
 class Markdown extends React.Component {
@@ -23,7 +24,10 @@ class Markdown extends React.Component {
         <ReactMarkdown
           source={content}
           escapeHtml={false}
-          renderers={{code: CodeBlock}}
+          renderers={{
+            code: CodeBlock,
+            link: MarkdownLink,
+          }}
         />
       </div>
     )
