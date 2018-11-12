@@ -13,7 +13,12 @@ const styles = theme => {
       border: '1px dotted #999',
       '& > code': {
         padding: '20px',
-      }
+      },
+      overflow: 'auto',
+    },
+    copyContainer: {
+      textAlign: 'right',
+      paddingTop: '20px',
     }
   }
 }
