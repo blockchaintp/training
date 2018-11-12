@@ -28,8 +28,7 @@ class AppBarComponent extends React.Component {
   render() {
     const { 
       classes,
-      user,
-      onLogout,
+      pages,
     } = this.props
 
     return (
@@ -37,7 +36,7 @@ class AppBarComponent extends React.Component {
         <AppBar position="fixed">
           <Toolbar>
             <SideMenu 
-
+              pages={ pages }
             />
             <img src="/images/white-outline-logo.png" className={ classes.logo } />
             <Typography variant="title" color="inherit" className={classes.flex}>

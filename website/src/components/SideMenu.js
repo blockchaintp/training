@@ -47,15 +47,24 @@ class SideMenu extends React.Component {
 
   openPage = (url) => {
     this.handleClose()
-    this.props.routerPush(url)
+    this.props.routerPush(url, null, this.props.router.routesMap)
   }
 
   getMenu() {
+    const { pages } = this.props
     const items = [
-      <ListItem button key='clusters' onClick={ () => this.openPage('PAGE_CLUSTER_LIST') }>
-        <ListItemText primary="Clusters" />
+      <ListItem button key='home' onClick={ () => this.openPage('/') }>
+        <ListItemText primary="Home" />
       </ListItem>
-    ]
+    ].concat(pages.map((page, i) => (
+      <ListItem 
+        button
+        key={ i }
+        onClick={ () => this.openPage(page.url) }
+      >
+        <ListItemText primary={ page.meta.title } />
+      </ListItem>
+    )))
 
     return items
   }

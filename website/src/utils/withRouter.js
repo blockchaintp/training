@@ -12,7 +12,16 @@ const withRouter = () => {
       }
     },
     dispatch => ({
-      routerPush: (url, payload) => dispatch(utils.push(url, payload)),
+      routerPush: (url, payload, routesMap) => {
+        const urlRoute = Object.keys(routesMap).filter(key => {
+          const route = routesMap[key]
+          return route.path == url          
+        })[0]
+        if(!urlRoute) return
+        dispatch({
+          type: urlRoute
+        })
+      },
       routerExternal: url => document.location = url,
     })
   )

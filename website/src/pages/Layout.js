@@ -28,8 +28,9 @@ import AppBar from '../components/AppBar'
   snackbar: snackbarModule,
 })
 @connect((state, ownProps) => {
+  const pages = selectors.pages(state)
   return {
-    
+    pages,
   }
 })
 class Layout extends React.Component {
@@ -60,6 +61,7 @@ class Layout extends React.Component {
       classes,
       children,
       snackbar,
+      pages,
     } = this.props
 
     return (
@@ -76,7 +78,7 @@ class Layout extends React.Component {
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         </Helmet>
         <AppBar 
-          
+          pages={ pages }
         />
         <div className={ classes.main }>
           <main className={ classes.content } ref={ this.contentRef }>

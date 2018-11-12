@@ -18,31 +18,28 @@ import selectors from '../selectors'
   snackbar: snackbarModule,
 })
 @connect((state, ownProps) => {
-  const route = ownProps.route
-  const page = selectors.item(state, 'page', route.pageId)
+  const pages = selectors.pages(state)
   return {
-    page,
+    pages,
   }
 })
-class DocumentPage extends React.Component {
+class HomePage extends React.Component {
 
   render() {
 
     const {
       classes,
-      page,
+      pages,
     } = this.props
 
     return (
       <div className={ classes.root }>
         <Paper className={ classes.paper }>
-          <Typography variant="title" className={ classes.pageHeader }>{ page.meta.title }</Typography>
-          <div className={ classes.content } dangerouslySetInnerHTML={{__html: page.body}}>
-          </div>
+          <Typography variant="title" className={ classes.pageHeader }>Pages</Typography>
         </Paper>
       </div>
     )
   }
 }
 
-export default withStyles(styles)(DocumentPage)
+export default withStyles(styles)(HomePage)
