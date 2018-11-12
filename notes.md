@@ -1,3 +1,38 @@
+## todo
+
+ * process markdown into pages
+   * copy/paste for code blocks
+   * links to github
+ * development environment
+   * docker-compose stacks
+     * node.js
+     * python
+ * xo demo
+   * make it less opinionated for demo
+   * track submitted transaction
+   * skeleton for attendees to improve
+     * tp with bug
+     * skeleton client
+ * deploying
+   * settings tp for new tp version
+ * basic voting app
+   * tp
+   * client
+ * dockerhub setup instructions
+ * sextant setup instructions
+ * seth integration
+ * protobufs setup
+
+## cover
+
+ * protobufs
+ * state (merkle tree)
+ * addressing
+ * signing transactions
+ * tp api
+ * listening for events
+ * network
+
 ## Hyperledger Sawtooth Overview
 
  * blockchain basics
