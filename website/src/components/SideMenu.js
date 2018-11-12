@@ -27,7 +27,7 @@ const styles = (theme) => ({
     marginRight: 20,
   },
   list: {
-    width: 250,
+    width: 350,
   },
 })
 

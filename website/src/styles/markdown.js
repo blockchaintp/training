@@ -11,7 +11,7 @@ const styles = theme => {
     },
     pre: {
       border: '1px dotted #999',
-      overflow: 'auto',
+      overflowX: 'auto',
       '& > code': {
         padding: '20px',  
       },

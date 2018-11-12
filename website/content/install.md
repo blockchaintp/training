@@ -64,4 +64,6 @@ We will make use of the various code examples used throughout these workshops.  
 git clone https://github.com/catenasys/training
 ```
 
+You can view the repository [here](https://github.com/catenasys/training)
+
 

@@ -15,7 +15,7 @@ The components we are about to run you will get to know a lot more over the next
  * **rest api** - gives a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) interface to the validator so you can write programs that query state and submit new transactions
  * **shell** - a command line interface with various useful clients that can speak to the validator
  * **settings-tp** - a transaction processor responsible for the settings applied to the whole network of validators
- * **intkey-tp** - a transaction processor that provides functions that can be used to test deployed ledgers.
+ * **intkey-tp** - a transaction processor that provides functions that can be used to test deployed ledgers
  * **xo-tp** - a transaction processor for the XO demo
 
 ## fetch manifest
@@ -27,6 +27,8 @@ Make sure you have cloned the code repository using the following command:
 ```bash
 git clone https://github.com/catenasys/training
 ```
+
+You can view the repository [here](https://github.com/catenasys/training)
 
 Then get yourself into the `code/compose` folder as follows:
 
@@ -45,37 +47,45 @@ $ ls -la
 The contents of this file can be seen as follows:
 
 ```yaml
-version: "2.1"
+version: "3"
 
 networks:
   sawtooth-dev:
 
 services:
 
+  # a transaction processor responsible for the settings applied to the whole network of validators
   settings-tp:
     image: hyperledger/sawtooth-settings-tp:1.0
     container_name: sawtooth-settings-tp-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: settings-tp -vv -C tcp://validator:4004
 
+  # a transaction processor that provides functions that can be used to test deployed ledgers
   intkey-tp-go:
     image: hyperledger/sawtooth-intkey-tp-go:1.0
     container_name: sawtooth-intkey-tp-go-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: intkey-tp-go -vv -C tcp://validator:4004
 
+  # a transaction processor for the XO demo
   xo-tp-go:
     image: hyperledger/sawtooth-xo-tp-go:1.0
     container_name: sawtooth-xo-tp-go-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: xo-tp-go -vv -C tcp://validator:4004
 
+  #the core process of a sawtooth network
+  # it replicates blocks to peers and validates new blocks being submitted by clients
   validator:
     image: hyperledger/sawtooth-validator:1.0
     container_name: sawtooth-validator-default
@@ -83,7 +93,8 @@ services:
       - 4004
     ports:
       - "4004:4004"
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     # start the validator with an empty genesis batch
     entrypoint: "bash -c \"\
         sawadm keygen && \
@@ -96,29 +107,32 @@ services:
           --bind network:tcp://eth0:8800 \
         \""
 
+  # gives a REST interface to the validator so you can write programs that query state and submit new transactions
   rest-api:
     image: hyperledger/sawtooth-rest-api:1.0
     container_name: sawtooth-rest-api-default
     expose:
       - 8008
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     ports:
       - "8008:8008"
     depends_on:
       - validator
     entrypoint: sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008
 
+  # a command line interface with various useful clients that can speak to the validator
   shell:
     image: hyperledger/sawtooth-shell:1.0
     container_name: sawtooth-shell-default
     depends_on:
       - rest-api
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: "bash -c \"\
         sawtooth keygen && \
         tail -f /dev/null \
         \""
-
 ```
 
 > Take a look through the docker-compose file above - it is a good map of the various components needed to run a sawtooth network.
@@ -129,7 +143,83 @@ services:
 Once you are inside the directory with the `docker-compose.yaml` file - you can use the following command to boot a running sawtooth network (ok - a single node local version but it's the same code we would run in production):
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
+
+## check docker status
+
+You can check if the sawtooth containers are running using the `docker ps` command:
+
+```bash
+docker ps
+```
+
+You should see output like the following:
+
+```bash
+CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTS                              NAMES
+6e160b61c5aa        hyperledger/sawtooth-shell:1.0          "bash -c 'sawtooth k…"   2 minutes ago       Up 2 minutes        4004/tcp, 8008/tcp                 sawtooth-shell-default
+d3f1897f1eaa        hyperledger/sawtooth-intkey-tp-go:1.0   "intkey-tp-go -vv -C…"   2 minutes ago       Up 2 minutes                                           sawtooth-intkey-tp-go-default
+fb510e9af142        hyperledger/sawtooth-settings-tp:1.0    "settings-tp -vv -C …"   2 minutes ago       Up 2 minutes        4004/tcp                           sawtooth-settings-tp-default
+6ee17e27da3e        hyperledger/sawtooth-rest-api:1.0       "sawtooth-rest-api -…"   2 minutes ago       Up 2 minutes        4004/tcp, 0.0.0.0:8008->8008/tcp   sawtooth-rest-api-default
+ec42c8bf42ff        hyperledger/sawtooth-xo-tp-go:1.0       "xo-tp-go -vv -C tcp…"   2 minutes ago       Up 2 minutes                                           sawtooth-xo-tp-go-default
+0dd56cf94a3a        hyperledger/sawtooth-validator:1.0      "bash -c 'sawadm key…"   2 minutes ago       Up 2 minutes        0.0.0.0:4004->4004/tcp             sawtooth-validator-default
+```
+
+## view logs
+
+You can view the logs of the various components using the `docker logs` command.
+
+To view the logs of the validator:
+
+```bash
+docker logs sawtooth-validator-default
+```
+
+To view the logs of the settings transaction processor:
+
+```bash
+docker logs sawtooth-settings-tp-default
+```
+
+> You can view the logs of any docker container you are running by first gettings it's name from `docker ps` then using the name in the logs command `docker logs <name>`
+
+The names of the various containers are shown as follows:
+
+ * validator = `sawtooth-validator-default`
+ * rest-api = `sawtooth-rest-api-default`
+ * settings-tp = `sawtooth-settings-tp-default`
+ * intkey-tp = `sawtooth-intkey-tp-go-default`
+ * xo-tp = `sawtooth-xo-tp-go-default`
+ * shell = `sawtooth-shell-default`
+
+## restarting
+
+To stop the docker-compose containers - make sure you are in the `code/compose` of the training repo and:
+
+```bash
+docker-compose stop
+```
+
+> **NOTE** because we are in development - when you restart sawtooth, you will loose all of your state and keys because we have not mounted volumes.  
+
+And to remove the containers completely:
+
+```bash
+docker-compose rm -f
+```
+
+To start them again later (again, making sure you are in the `code/compose` folder):
+
+```bash
+docker-compose start
+```
+
+## development keys
+
+The shell container will have created some keys for us to use in development
+
+
+
 
 

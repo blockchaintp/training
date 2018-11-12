@@ -1,34 +1,42 @@
-version: "2.1"
+version: "3"
 
 networks:
   sawtooth-dev:
 
 services:
 
+  # a transaction processor responsible for the settings applied to the whole network of validators
   settings-tp:
     image: hyperledger/sawtooth-settings-tp:1.0
     container_name: sawtooth-settings-tp-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: settings-tp -vv -C tcp://validator:4004
 
+  # a transaction processor that provides functions that can be used to test deployed ledgers
   intkey-tp-go:
     image: hyperledger/sawtooth-intkey-tp-go:1.0
     container_name: sawtooth-intkey-tp-go-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: intkey-tp-go -vv -C tcp://validator:4004
 
+  # a transaction processor for the XO demo
   xo-tp-go:
     image: hyperledger/sawtooth-xo-tp-go:1.0
     container_name: sawtooth-xo-tp-go-default
     depends_on:
       - validator
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: xo-tp-go -vv -C tcp://validator:4004
 
+  #the core process of a sawtooth network
+  # it replicates blocks to peers and validates new blocks being submitted by clients
   validator:
     image: hyperledger/sawtooth-validator:1.0
     container_name: sawtooth-validator-default
@@ -36,7 +44,8 @@ services:
       - 4004
     ports:
       - "4004:4004"
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     # start the validator with an empty genesis batch
     entrypoint: "bash -c \"\
         sawadm keygen && \
@@ -49,24 +58,28 @@ services:
           --bind network:tcp://eth0:8800 \
         \""
 
+  # gives a REST interface to the validator so you can write programs that query state and submit new transactions
   rest-api:
     image: hyperledger/sawtooth-rest-api:1.0
     container_name: sawtooth-rest-api-default
     expose:
       - 8008
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     ports:
       - "8008:8008"
     depends_on:
       - validator
     entrypoint: sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008
 
+  # a command line interface with various useful clients that can speak to the validator
   shell:
     image: hyperledger/sawtooth-shell:1.0
     container_name: sawtooth-shell-default
     depends_on:
       - rest-api
-    network: sawtooth-dev
+    networks:
+      - sawtooth-dev
     entrypoint: "bash -c \"\
         sawtooth keygen && \
         tail -f /dev/null \

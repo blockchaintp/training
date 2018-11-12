@@ -55,6 +55,7 @@ class BottomNav extends React.Component {
     return (
       <Button
         onClick={ () => this.openPage(previousPage.url) }
+        color='secondary'
       >
         <IconBack className={ classes.leftIcon } />
         Prev : { previousPage.meta.order }. { previousPage.meta.title }
@@ -70,6 +71,7 @@ class BottomNav extends React.Component {
     return (
       <Button
         onClick={ () => this.openPage(nextPage.url) }
+        color='secondary'
       >
         Next : { nextPage.meta.order }. { nextPage.meta.title }
         <IconForward className={ classes.rightIcon } />
