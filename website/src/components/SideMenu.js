@@ -61,10 +61,8 @@ class SideMenu extends React.Component {
   }
 
   render() {
-    const { classes, user } = this.props
+    const { classes } = this.props
     const { drawerOpen } = this.state
-
-    if(!user) return null
 
     return (
       <div>
