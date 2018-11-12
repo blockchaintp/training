@@ -1,0 +1,35 @@
+image: binocarlos/cibase:v6
+
+variables:
+  DOCKER_API_VERSION: "1.23"
+  DOCKER_REGISTRY: gcr.io
+  GCP_PROJECT_ID: webkit-servers
+  GCP_ZONE: europe-west1-b
+  GCP_CLUSTER_ID: appcluster
+  IMAGE_NAME: blockchaintp-training-website
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  variables:
+    IMAGE: $DOCKER_REGISTRY/$GCP_PROJECT_ID/$IMAGE_NAME:$CI_COMMIT_SHA
+  before_script:
+    - bash scripts/ci_connect.sh
+  script:
+    - docker build -t $IMAGE website
+    - gcloud docker -- push $IMAGE
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  variables:
+    IMAGE: $DOCKER_REGISTRY/$GCP_PROJECT_ID/$IMAGE_NAME:$CI_COMMIT_SHA
+  before_script:
+    - bash scripts/ci_connect.sh
+  script:
+    - cat deploy/deployment.yaml | envsubst
+    - cat deploy/deployment.yaml | envsubst | kubectl apply -f -
