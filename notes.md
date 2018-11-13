@@ -1,3 +1,103 @@
+## run through
+
+### day 1
+
+09:30-10:00 Intros and Objectives
+ 
+ * get everyone to say hello
+ * get everyone to state what they want to learn (make notes)
+ * make groups
+
+10:00-10:30 Hyperledger Sawtooth Overview
+
+ * talk through slides from talk
+
+10:30-11:00 Hands-on: Setup Development Environment
+
+ * workshops 1,2
+
+11:00-11:30 Coffee
+
+11:30-12:15 Hands-on: Tic-Tac-Toe Demo
+
+ * workshops 3,4,5
+ * play each other with GUI and CLI
+
+12:15-13:00 Application Development Best Practices
+
+ * merkle trees
+ * addressing
+ * blocks, batches, transactions
+ * show the 'chain' as being state changes from blocks
+ * transaction processors
+   * tp api
+   * state model
+ * clients
+   * signing transactions
+   * verifying transaction
+   * caching
+
+14:00-15:30 Hands-on: Tic-Tac-Toe Deep Dive
+
+ * look at code for tp / client
+ * refer back to Application Development Best Practices by picking bits of code
+ * ideas for app:
+   * fix play yourself
+   * implement player log
+   * implement leaderboard
+   * implement collaborative xo (only one move per key)
+
+16:00-17:30 Introduce Sextant & Demo Deploying to Production
+
+ * make dockerhub account
+ * build new image
+ * push new image
+ * spin up sextant cluster
+ * deploy tp to cluster
+ * play game using CLI
+
+### day 2
+
+09:30-10:00 Day 1 recap
+
+ * development env
+ * running tp in dev
+ * xo gui / cli
+ * `Application Development Best Practices` overview
+ * recap what people did with xo deep dive
+ * recap sextant
+
+10:00-11:00 Hands-on: Develop Voting App #1
+
+ * have bare bones and complete version of tp
+ * have bare bones and complete version of cli
+ * run tp locally in dev
+ * connect client locally
+
+11:30-13:00 Hands-on: Develop Voting App #2
+
+ * continue dev
+ * deploy to sextant
+
+14:00-15:30 Hands-on: Seth Integration
+
+ * run through commands
+ * discussion / ideas
+
+16:00-17:30 Running Sawtooth in Production
+
+ * deep dive presentation about sextant and the various parts
+ * show monitoring
+ * kubernetes concepts
+
+
+
+
+### transations / batches / batchlist
+
+ * how the atomic unit is a batch
+ * transactions can be mixed in a batch
+
 ## todo
 
  * process markdown into pages

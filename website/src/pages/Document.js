@@ -42,7 +42,7 @@ class DocumentPage extends React.Component {
     return (
       <div className={ classes.root }>
         <Paper className={ classes.paper }>
-          <Typography variant="headline" className={ classes.pageHeader }>{ page.meta.title }</Typography>
+          <Typography variant="headline" className={ classes.pageHeader }>{ page.meta.order }. { page.meta.title }</Typography>
           <Markdown
             content={ page.body }
           />
