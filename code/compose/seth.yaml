@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+
+  # a transaction processor for deploying Ethereum contracts to Sawtooth
+  seth-tp:
+    image: blockchaintp/sawtooth-seth-tp:1.0.5
+    container_name: sawtooth-seth-tp
+    depends_on:
+      - validator
+    networks:
+      - sawtooth-dev
+    expose:
+      - 4005
+    ports:
+      - "4005:4005"
+    entrypoint: seth-tp -v --connect tcp://validator:4004 --listen tcp://0.0.0.0:4005

@@ -1,0 +1,40 @@
+version: "3.5"
+
+services:
+
+  # a transaction processor for the XO demo
+  # we are using local code for this so we can edit it
+  xo-tp-javascript:
+    build:
+      context: ../xo-tp-javascript
+    container_name: sawtooth-xo-tp-javascript-default
+    depends_on:
+      - validator
+    networks:
+      - sawtooth-dev
+    # mount the code for our tp into the container
+    # this makes it easy to edit the code on our computer
+    # without having to rebuild the container image each time
+    volumes:
+      - ../xo-tp-javascript/src:/app/src
+    # loop forever so we can manually enter the container to run the tp
+    # this is useful for development where we want to restart the tp
+    # after having made code changes
+    entrypoint: bash -c 'while true; do sleep 1; done'
+
+  # a web UI frontend for the xo tp
+  # it will communicate to the TP via the sawtooth rest api
+  xo-demo:
+    image: blockchaintp/xo-demo:master
+    container_name: sawtooth-xo-tp-demo
+    networks:
+      - sawtooth-dev
+    ports:
+      - "8081:80"
+    depends_on:
+      - validator
+    environment:
+      - REST_API_HOSTNAME=rest-api
+      - REST_API_PORT=8008
+
+
