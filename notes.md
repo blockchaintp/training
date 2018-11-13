@@ -34,6 +34,7 @@
    * state model
  * clients
    * signing transactions
+     * what are the keys
    * verifying transaction
    * caching
 
@@ -43,6 +44,7 @@
  * refer back to Application Development Best Practices by picking bits of code
  * ideas for app:
    * fix play yourself
+   * improve error messages (for example rather than it's not your turn - you are not in the game)
    * implement player log
    * implement leaderboard
    * implement collaborative xo (only one move per key)
