@@ -7,4 +7,4 @@ COPY ./yarn.lock /app/yarn.lock
 RUN yarn install
 COPY ./src /app/src
 WORKDIR /app
-ENTRYPOINT ["node", "src/index.js"]
+ENTRYPOINT ["node", "src/tp/index.js"]

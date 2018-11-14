@@ -10,7 +10,7 @@ services:
   # it replicates blocks to peers and validates new blocks being submitted by clients
   validator:
     image: hyperledger/sawtooth-validator:1.0.5
-    container_name: sawtooth-validator-default
+    container_name: sawtooth-validator
     expose:
       - 4004
     ports:
@@ -32,7 +32,7 @@ services:
   # a transaction processor responsible for the settings applied to the whole network of validators
   settings-tp:
     image: hyperledger/sawtooth-settings-tp:1.0.5
-    container_name: sawtooth-settings-tp-default
+    container_name: sawtooth-settings-tp
     depends_on:
       - validator
     networks:
@@ -42,7 +42,7 @@ services:
   # a transaction processor that provides functions that can be used to test deployed ledgers
   intkey-tp-go:
     image: hyperledger/sawtooth-intkey-tp-go:1.0.5
-    container_name: sawtooth-intkey-tp-go-default
+    container_name: sawtooth-intkey-tp-go
     depends_on:
       - validator
     networks:
@@ -52,7 +52,7 @@ services:
   # gives a REST interface to the validator so you can write programs that query state and submit new transactions
   rest-api:
     image: hyperledger/sawtooth-rest-api:1.0.5
-    container_name: sawtooth-rest-api-default
+    container_name: sawtooth-rest-api
     expose:
       - 8008
     networks:
@@ -66,7 +66,7 @@ services:
   # a command line interface with various useful clients that can speak to the validator
   shell:
     image: hyperledger/sawtooth-shell:1.0.5
-    container_name: sawtooth-shell-default
+    container_name: sawtooth-shell
     depends_on:
       - rest-api
     networks:

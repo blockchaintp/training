@@ -6,8 +6,8 @@ services:
   # we are using local code for this so we can edit it
   xo-tp:
     build:
-      context: ../xo-javascript
-    container_name: sawtooth-xo-javascript-default
+      context: ../xo
+    container_name: sawtooth-xo-tp
     depends_on:
       - validator
     networks:
@@ -18,18 +18,18 @@ services:
     # also mount the keys from the shell container so we can
     # read the keys for submitting transactions from the CLI
     volumes:
-      - ../xo-javascript/src:/app/src
+      - ../xo/src:/app/src
       - ./.keys:/root/.sawtooth/keys
     # loop forever so we can manually enter the container to run the tp
     # this is useful for development where we want to restart the tp
     # after having made code changes
-    entrypoint: bash -c 'while true; do sleep 1; done'
+    entrypoint: tail -f /dev/null
 
   # a web UI frontend for the xo tp
   # it will communicate to the TP via the sawtooth rest api
-  xo-demo:
+  xo-ui:
     image: blockchaintp/xo-demo:master
-    container_name: sawtooth-xo-demo
+    container_name: sawtooth-xo-ui
     networks:
       - sawtooth-dev
     ports:
