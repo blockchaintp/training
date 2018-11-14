@@ -18,12 +18,6 @@ yargs
     command: 'list',
     aliases: ['$0'],
     desc: 'List the current XO games',
-    builder: {
-      output: {
-        alias: 'o',
-        default: 'text',
-      }
-    },
     handler: function(argv) {
       console.log('-------------------------------------------');
       console.dir(argv)
@@ -38,14 +32,20 @@ yargs
     }
   })
   .option('url', {
-    alias: 'u',
     describe: 'the url to connect to the rest api',
     default: process.env.URL,
   })
   .option('output', {
-    alias: 'o',
     describe: 'the format of the output (text, json)',
     default: 'text',
+  })
+  .option('key-dir', {
+    describe: 'the directory to read the keys from',
+    default: '/root/.sawtooth/keys',
+  })
+  .option('key-name', {
+    describe: 'the name of the keys to use for submitting new transactions',
+    default: 'root',
   })
   .demandCommand()
   .demandOption(['url'], 'Please provide a --url option (or URL env variable) to connect to the rest api')

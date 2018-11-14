@@ -72,6 +72,9 @@ services:
     networks:
       - sawtooth-dev
     entrypoint: "bash -c \"\
-        sawtooth keygen && \
+        sawtooth keygen --force && \
         tail -f /dev/null \
         \""
+    # mount the key directory so we can use our keys in other containers
+    volumes:
+      - ./.keys:/root/.sawtooth/keys

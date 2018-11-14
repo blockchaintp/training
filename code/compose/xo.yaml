@@ -15,8 +15,11 @@ services:
     # mount the code for our tp into the container
     # this makes it easy to edit the code on our computer
     # without having to rebuild the container image each time
+    # also mount the keys from the shell container so we can
+    # read the keys for submitting transactions from the CLI
     volumes:
       - ../xo-javascript/src:/app/src
+      - ./.keys:/root/.sawtooth/keys
     # loop forever so we can manually enter the container to run the tp
     # this is useful for development where we want to restart the tp
     # after having made code changes

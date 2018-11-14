@@ -218,3 +218,4 @@ typings/
 
 build
 public
+.keys
