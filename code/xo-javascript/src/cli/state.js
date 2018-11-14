@@ -2,23 +2,15 @@
 
 /*
 
-  library for managing the state of a transaction processor
+  library for reading the state of the XO namespace
 
-  Create, Retreive, Update, Delete (i.e. CRUD) actions are the main
-  concern of this library
+  we use the `/state` rest api endpoint to load data from beneath an address
 
-  we are given a 'context' which is a core SDK object that has the
-  following key methods:
+  for listing games - we load all state entries below the transaction family
+  prefix
 
-   * getState - read state from an address prefix
-   * setState - set state to an address
-   * deleteState - delete state from an address
-
-  Each of these methods will mutate the state associated with the given
-  address
-
-  They all return Promises which is a way in Javascript of handling the 
-  asynchronous nature of the underlying api 
+  for loading a single game - we construct an address for the specific game
+  based on the prefix + game name
   
 */
 
@@ -30,9 +22,62 @@ const TIMEOUT = 1000
 // addresses based on the transaction family name and the game name
 const Address = require('../shared/address')
 
-// import the encoding library which knows how to encode and decode the
-// state of a game into/from a single string
-const Encoding = require('../shared/encoding')
+// a function that knows how to process an encoded data into game objects
+// splitting by , (because the XO transaction family uses CSV encoding)
+function deserialize(csvString) {
+
+  // if there is no data then return nothing
+  if(!csvString) return null
+
+  // there should only be a single game at the given address
+  // the XO transaction family specification states that we should
+  // be joining multiple values using the | character
+  // this is a defensive move to account for accidental address collisions
+
+  // always use the first string found - ignore the split by | part of the
+  // xo tp family specification for the sake of leaning
+  const gameString = csvString.split('|')[0]
+
+  // split the gameString into an array of parts
+  const csvParts = gameString.split(',')
+
+  // return an object turning the positional values into named keyd
+  return {
+
+    // the name of the game
+    name: csvParts[0],
+
+    // the current representation of the board
+    board: csvParts[1],
+
+    // the current state of the game
+    state: csvParts[2],
+
+    // the signing key used for player1
+    player1: csvParts[3],
+
+    // the signing key used for player2
+    player2: csvParts[4],
+  }
+}
+
+// a function that knows how to encode a of game object into the data
+// string we can save back to the validator state tree
+// this involves CSV encoding the game object
+function serialize(gameObject) {
+
+  // create an array with the keys in the correct order
+  const gameParts = [
+    gameObject.name,
+    gameObject.board,
+    gameObject.state,
+    gameObject.player1,
+    gameObject.player2,
+  ]
+
+  // join the gameParts using a comma and return that string
+  return gameParts.join(',')
+}
 
 // the main library constructor which accepts the SDK context object
 function XOState(context) {
@@ -64,7 +109,7 @@ function XOState(context) {
         const stringAddressData = binaryAddressData.toString()
 
         // return a game object that is deserialized from the given string
-        return Encoding.deserialize(stringAddressData)
+        return deserialize(stringAddressData)
       })
   }
 
@@ -74,7 +119,7 @@ function XOState(context) {
   function setGame(name, gameObject) {
     
     // first we serialize the gameObject into a CSV string using the serialize function
-    const gameCSVString = Encoding.serialize(gameObject)
+    const gameCSVString = serialize(gameObject)
 
     // turn the CSV string into binary data
     const gameBinaryData = Buffer.from(gameCSVString)
@@ -99,7 +144,6 @@ function XOState(context) {
     // get the address for the given game name
     const address = Address.gameAddress(name)
 
-    // call the deleteState method on the validator
     return context.deleteState([address], TIMEOUT)
   }
 
