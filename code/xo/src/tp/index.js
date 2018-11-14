@@ -58,5 +58,4 @@ transactionProcessor._handleShutdown = tpUtils.handleShutdown(transactionProcess
 
 // start the transactionProcessor - this will initiate and register the
 // transaction processor with the validator
-console.log(`connecting to validator: ${args.validator}`)
 transactionProcessor.start()
