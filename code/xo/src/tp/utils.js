@@ -38,16 +38,8 @@ function isWin(board, letter) {
       board[winningCombo[2] - 1],
     ].join('')
 
-    console.log('-------------------------------------------');
-    console.log(winningComboString)
-    console.log(playerWinString)
-
     return winningComboString == playerWinString
   })
-
-  console.log('-------------------------------------------');
-  console.log(letter)
-  console.log(winningCombos.length)
 
   // if there is a winningCombo - it means the given letter has won the game
   return winningCombos.length > 0
