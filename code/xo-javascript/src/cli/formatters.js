@@ -43,8 +43,29 @@ function asJson(data) {
   return JSON.stringify(data, null, 4)
 }
 
+// print a submitted transaction status
+function submittedBatch(data) {
+  const parts = [
+    `batch id:             ${data.id}`,
+    `status:               ${data.status}`,
+  ]
+
+  if(data.invalid_transactions.length > 0) {
+    parts.push(`invalid transactions: ${data.invalid_transactions.length}`)
+
+    data.invalid_transactions.forEach(function(invalidTransaction) {
+      parts.push('')
+      parts.push(`transaction id:       ${invalidTransaction.id}`)
+      parts.push(`message:              ${invalidTransaction.message}`)
+    })
+  }
+
+  return parts.join("\n")
+}
+
 module.exports = {
   listGamesTable: listGamesTable,
   gameToString: gameToString,
   asJson: asJson,
+  submittedBatch: submittedBatch,
 }

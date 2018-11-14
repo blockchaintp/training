@@ -37,12 +37,20 @@ function getBatchStatus(restApiUrl, batchId) {
 
 // submit a new transaction
 // the payload is the raw HTTP body to send to the validator (via the rest api)
-function submitTransaction(restApiUrl, payload) {
-  // TBC
+function submitBatchList(restApiUrl, batchListBytes) {
+  return axios
+    .post(`${restApiUrl}/batches`, batchListBytes, {
+      headers: {
+        'Content-Type': 'application/octet-stream'
+      }
+    })
+    .then(function(response) {
+      return response.data
+    })
 }
 
 module.exports = {
   getState: getState,
   getBatchStatus: getBatchStatus,
-  submitTransaction: submitTransaction,
+  submitBatchList: submitBatchList,
 }
