@@ -22,19 +22,35 @@ const WINS = [
 // determine if that letter has won the game
 function isWin(board, letter) {
 
+  const playerWinString = [
+    letter,
+    letter,
+    letter,
+  ].join('')
+
   // filter each of the winning moves down to one
   // that is present on board
-  const winningCombo = WINS.filter(function(winningMove) {
+  const winningCombos = WINS.filter(function(winningCombo) {
 
-    // check if the given winningMove is present on the board
-    return 
-      board[winningMove[0] - 1] === letter &&
-      board[winningMove[1] - 1] === letter &&
-      board[winningMove[2] - 1] === letter
-  })[0]
+    const winningComboString = [
+      board[winningCombo[0] - 1],
+      board[winningCombo[1] - 1],
+      board[winningCombo[2] - 1],
+    ].join('')
+
+    console.log('-------------------------------------------');
+    console.log(winningComboString)
+    console.log(playerWinString)
+
+    return winningComboString == playerWinString
+  })
+
+  console.log('-------------------------------------------');
+  console.log(letter)
+  console.log(winningCombos.length)
 
   // if there is a winningCombo - it means the given letter has won the game
-  return winningCombo ? true : false
+  return winningCombos.length > 0
 }
 
 

@@ -236,10 +236,10 @@ class XOHandler extends TransactionHandler {
         game.board = boardList.join('')
 
         // check to see if either player has won the game
-        if (tpUtils.isWin(game.board, 'X')) {
+        if (tpUtils.isWin(boardList, 'X')) {
           game.state = 'P1-WIN'
         } 
-        else if (tpUtils.isWin(game.board, 'O')) {
+        else if (tpUtils.isWin(boardList, 'O')) {
           game.state = 'P2-WIN'
         }
         // check to see if there are any empty spaces left on the board

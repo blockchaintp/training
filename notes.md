@@ -2,7 +2,8 @@
 
  * open source the training repo
  * setup sextant users
-
+ * https://docs.google.com/presentation/d/1NrSlU4K4ESckOu6fWtsvqLgPO2AUQKNlAATW5FR4nhU/edit#slide=id.p1
+ 
 ## run through
 
 ### day 1
@@ -41,18 +42,23 @@
    * signing transactions
      * what are the keys
    * verifying transaction
-   * caching
+
 
 14:00-15:30 Hands-on: Tic-Tac-Toe Deep Dive
 
  * look at code for tp / client
  * refer back to Application Development Best Practices by picking bits of code
  * ideas for app:
+
    * fix play yourself
    * improve error messages (for example rather than it's not your turn - you are not in the game)
+   * implement collaborative xo (only one move per key)
+   * add a new transaction type to cheat game (like autowin) - an easter egg!!!
+   * add a new transaction type to reset game
+   * add a new transaction type to lock game
+   * implement the storage as binary JSON
    * implement player log
    * implement leaderboard
-   * implement collaborative xo (only one move per key)
 
 16:00-17:30 Introduce Sextant & Demo Deploying to Production
 
