@@ -26,7 +26,7 @@
 
 11:30-12:15 Hands-on: Tic-Tac-Toe Demo
 
- * workshops 3,4,5
+ * workshops 3,4
  * play each other with GUI and CLI
 
 12:15-13:00 Application Development Best Practices
@@ -46,6 +46,7 @@
 
 14:00-15:30 Hands-on: Tic-Tac-Toe Deep Dive
 
+ * workshops 5,6,7,8,9
  * look at code for tp / client
  * refer back to Application Development Best Practices by picking bits of code
  * ideas for app:
