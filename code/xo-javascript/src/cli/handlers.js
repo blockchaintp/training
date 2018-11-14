@@ -145,8 +145,31 @@ function createGame(args) {
   
 */
 function playGame(args) {
-  console.log('-------------------------------------------');
-  console.dir(args)
+  
+  const state = State(args.url)
+
+  // load the keys from disk based on the keyDir and keyName
+  const keys = keyUtils.getKeys(args.keyDir, args.keyName)
+
+  // create a signer using our private key
+  const signer = Transaction.createSigner(keys.private)
+
+  // create a payload representing a create new game action
+  const payload = [args.name, 'take', args.space].join(',')
+
+  // create the signed transaction ready to send
+  // this will return the raw binary we will send to the rest api
+  const batchListBytes = Transaction.singleTransactionBytes({
+    signer: signer,
+    gameName: args.name,
+    payload: payload,
+  })
+
+  // send the batch list bytes to the rest api
+  state
+    .sendBatch(batchListBytes)
+    .then(_submitBatchListHandler(state, args.format, args.wait))
+    .catch(_errorHandler)
 }
 
 /*
@@ -169,8 +192,30 @@ function playGame(args) {
   
 */
 function deleteGame(args) {
-  console.log('-------------------------------------------');
-  console.dir(args)
+  const state = State(args.url)
+
+  // load the keys from disk based on the keyDir and keyName
+  const keys = keyUtils.getKeys(args.keyDir, args.keyName)
+
+  // create a signer using our private key
+  const signer = Transaction.createSigner(keys.private)
+
+  // create a payload representing a create new game action
+  const payload = [args.name, 'delete', ''].join(',')
+
+  // create the signed transaction ready to send
+  // this will return the raw binary we will send to the rest api
+  const batchListBytes = Transaction.singleTransactionBytes({
+    signer: signer,
+    gameName: args.name,
+    payload: payload,
+  })
+
+  // send the batch list bytes to the rest api
+  state
+    .sendBatch(batchListBytes)
+    .then(_submitBatchListHandler(state, args.format, args.wait))
+    .catch(_errorHandler)
 }
 
 // generic handler for submitted transactions
