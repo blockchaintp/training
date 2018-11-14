@@ -19,7 +19,6 @@ const handlers = require('./handlers')
 yargs
   .command({
     command: 'list',
-    aliases: ['$0'],
     desc: 'List the current XO games',
     handler: handlers.listGames,
   })
