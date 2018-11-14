@@ -38,8 +38,29 @@ function State(restApiUrl) {
   function loadGames() {
     return RestApi
       .getState(restApiUrl, Address.XO_NAMESPACE)
-      /*.then(function(data) {
-          console.log('-------------------------------------------'
-      })*/
+      .then(function(body) {
+
+        // the body of a state response will have the an array of addresses with their state entries
+        // let's map the raw game data into a processed version using the
+        // encoding library
+        return body.data
+          .map(function(gameStateEntry) {
+
+            // get the raw base64 data for the state entry
+            const base64Data = gameStateEntry.data
+
+            // convert it from base64 into a CSV string
+            const rawGameData = Encoding.fromBase64(base64Data)
+
+            // convert the CSV string into a game object
+            return Encoding.deserialize(rawGameData)
+          })
+      })
+  }
+
+  return {
+    loadGames: loadGames,
   }
 }
+
+module.exports = State

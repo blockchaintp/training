@@ -63,7 +63,21 @@ function serialize(gameObject) {
   return gameParts.join(',')
 }
 
+// convert a base64 string into it's raw data
+function fromBase64(data) {
+  const buffer = new Buffer(data, 'base64')
+  return buffer.toString('utf8')
+}
+
+// convert raw data into a base64 string
+function toBase64(data) {
+  const buffer = new Buffer(data)
+  return buffer.toString('base64')
+}
+
 module.exports = {
   deserialize,
   serialize,
+  fromBase64,
+  toBase64,
 }

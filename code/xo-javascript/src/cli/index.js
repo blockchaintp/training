@@ -13,29 +13,41 @@
 
 const yargs = require('yargs')
 
+// import the handlers that will execute each command
+const handlers = require('./handlers')
+
 yargs
   .command({
     command: 'list',
     aliases: ['$0'],
     desc: 'List the current XO games',
-    handler: function(argv) {
-      console.log('-------------------------------------------');
-      console.dir(argv)
-    }
+    handler: handlers.listGames,
   })
   .command({
     command: 'create <name>',
     desc: 'Create a new XO game',
-    handler: function(argv) {
-      console.log('-------------------------------------------');
-      console.dir(argv)
-    }
+    handler: handlers.createGame,
+  })
+  .command({
+    command: 'show <name>',
+    desc: 'Display the current status of an XO game',
+    handler: handlers.showGame,
+  })
+  .command({
+    command: 'take <name> <space>',
+    desc: 'Take a place in an existing XO game',
+    handler: handlers.playGame,
+  })
+  .command({
+    command: 'delete <name>',
+    desc: 'Delete an existing XO game',
+    handler: handlers.deleteGame,
   })
   .option('url', {
     describe: 'the url to connect to the rest api',
     default: process.env.URL,
   })
-  .option('output', {
+  .option('format', {
     describe: 'the format of the output (text, json)',
     default: 'text',
   })

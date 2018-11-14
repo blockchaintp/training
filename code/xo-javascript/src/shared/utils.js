@@ -24,16 +24,16 @@ function gameToString(game){
 
   // make an array of text lines for the output
   const parts = [
-    `GAME: ${game.name}`
-    `PLAYER 1: ${shortKey(game.player1)}`
-    `PLAYER 2: ${shortKey(game.player2)}`
-    `STATE: ${game.state}`
-    ``
-    `${boardSpaces[0]} | ${boardSpaces[1]} | ${boardSpaces[2]}`
-    `---|---|---`
-    `${boardSpaces[3]} | ${boardSpaces[4]} | ${boardSpaces[5]}`
-    `---|---|---`
-    `${boardSpaces[6]} | ${boardSpaces[7]} | ${boardSpaces[8]}`
+    `GAME:     ${game.name}`,
+    `PLAYER 1: ${shortKey(game.player1)}`,
+    `PLAYER 2: ${shortKey(game.player2)}`,
+    `STATE:    ${game.state}`,
+    ``,
+    ` ${boardSpaces[0]} | ${boardSpaces[1]} | ${boardSpaces[2]} `,
+    `---|---|---`,
+    ` ${boardSpaces[3]} | ${boardSpaces[4]} | ${boardSpaces[5]} `,
+    `---|---|---`,
+    ` ${boardSpaces[6]} | ${boardSpaces[7]} | ${boardSpaces[8]} `,
   ]
 
   return parts.join("\n")

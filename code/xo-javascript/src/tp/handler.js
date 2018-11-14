@@ -253,7 +253,7 @@ class XOHandler extends TransactionHandler {
         console.log(sharedUtils.gameToString(game))
         
         // set the state with the new game data
-        return xoState.setGame(payload.name, game)
+        return state.setGame(payload.name, game)
       })
   }
 }
