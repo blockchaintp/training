@@ -4,10 +4,10 @@ services:
 
   # a transaction processor for the XO demo
   # we are using local code for this so we can edit it
-  xo-tp-javascript:
+  xo-tp:
     build:
-      context: ../xo-tp-javascript
-    container_name: sawtooth-xo-tp-javascript-default
+      context: ../xo-javascript
+    container_name: sawtooth-xo-javascript-default
     depends_on:
       - validator
     networks:
@@ -16,7 +16,7 @@ services:
     # this makes it easy to edit the code on our computer
     # without having to rebuild the container image each time
     volumes:
-      - ../xo-tp-javascript/src:/app/src
+      - ../xo-javascript/src:/app/src
     # loop forever so we can manually enter the container to run the tp
     # this is useful for development where we want to restart the tp
     # after having made code changes
@@ -26,7 +26,7 @@ services:
   # it will communicate to the TP via the sawtooth rest api
   xo-demo:
     image: blockchaintp/xo-demo:master
-    container_name: sawtooth-xo-tp-demo
+    container_name: sawtooth-xo-demo
     networks:
       - sawtooth-dev
     ports:

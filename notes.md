@@ -1,3 +1,8 @@
+## dont forget
+
+ * open source the training repo
+ * setup sextant users
+
 ## run through
 
 ### day 1
