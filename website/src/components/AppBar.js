@@ -40,7 +40,7 @@ class AppBarComponent extends React.Component {
             />
             <img src="/images/white-outline-logo.png" className={ classes.logo } />
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Resources2
+              Resources
             </Typography>
           </Toolbar>
         </AppBar>
