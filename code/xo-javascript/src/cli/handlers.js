@@ -24,13 +24,49 @@ function listGames(args) {
 
   state
     .loadGames()
-    .then(function(data) {
+    .then(function(gameList) {
 
       if(args.format == 'json') {
-        console.log(Formatters.asJson(data))
+        console.log(Formatters.asJson(gameList))
       }
       else {
-        console.log(Formatters.listGamesTable(data))
+        console.log(Formatters.listGamesTable(gameList))
+      }
+    })
+}
+
+/*
+
+  show the details of an existing game
+
+   * call the loadGame method of the state library
+   * format the output
+
+  args:
+
+   * url - the url of the restAPi server
+   * name - the name of the existing game
+   * format - the format for the output
+  
+*/
+function showGame(args) {
+  const state = State(args.url)
+
+  state
+    .loadGame(args.name)
+    .then(function(gameData) {
+
+      // if the game is not found then error
+      if(!gameData) {
+        console.error(`There was no game found with the name: ${args.name}`)
+        process.exit(1)
+      }
+
+      if(args.format == 'json') {
+        console.log(Formatters.asJson(gameData))
+      }
+      else {
+        console.log(Formatters.gameToString(gameData))
       }
     })
 }
@@ -55,25 +91,6 @@ function listGames(args) {
   
 */
 function createGame(args) {
-  console.log('-------------------------------------------');
-  console.dir(args)
-}
-
-/*
-
-  show the details of an existing game
-
-   * call the loadGame method of the state library
-   * format the output
-
-  args:
-
-   * url - the url of the restAPi server
-   * name - the name of the existing game
-   * format - the format for the output
-  
-*/
-function showGame(args) {
   console.log('-------------------------------------------');
   console.dir(args)
 }

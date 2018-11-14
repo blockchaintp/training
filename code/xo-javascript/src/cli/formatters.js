@@ -33,6 +33,11 @@ function listGamesTable(games) {
   })
 }
 
+// pretty print a single game
+function gameToString(game) {
+  return sharedUtils.gameToString(game)
+}
+
 // print the raw JSON to stdout
 function asJson(data) {
   return JSON.stringify(data, null, 4)
@@ -40,5 +45,6 @@ function asJson(data) {
 
 module.exports = {
   listGamesTable: listGamesTable,
+  gameToString: gameToString,
   asJson: asJson,
 }

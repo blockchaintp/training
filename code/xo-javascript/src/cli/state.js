@@ -58,8 +58,39 @@ function State(restApiUrl) {
       })
   }
 
+  // load a single game based on its name
+  // we use the specific storage address for the game to do this
+  function loadGame(name) {
+    const gameAddress = Address.gameAddress(name)
+    return RestApi
+      .getState(restApiUrl, gameAddress)
+      .then(function(body) {
+
+        // the body of a state response will have the an array of addresses with their state entries
+        // let's extract the data for this one game
+
+        const gameStateEntry = body.data.filter(function(entry) {
+          return entry.address == gameAddress
+        })[0]
+
+        if(!gameStateEntry) return null
+
+        // now let's process the game data from the raw base64 bytes we have loaded
+
+        // get the raw base64 data for the state entry
+        const base64Data = gameStateEntry.data
+
+        // convert it from base64 into a CSV string
+        const rawGameData = Encoding.fromBase64(base64Data)
+
+        // convert the CSV string into a game object
+        return Encoding.deserialize(rawGameData)
+      })
+  }
+
   return {
     loadGames: loadGames,
+    loadGame: loadGame,
   }
 }
 
