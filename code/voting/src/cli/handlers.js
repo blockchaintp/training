@@ -12,6 +12,8 @@ const keyUtils = require('./key')
 // import the Transaction library
 const Transaction = require('./transaction')
 
+const Address = require('../shared/address')
+
 /*
 
   the list command handler
@@ -25,7 +27,7 @@ const Transaction = require('./transaction')
    * format - the format for the output
   
 */
-function listGames(args) {
+function listPeople(args) {
   const state = State(args.url)
 
   state
@@ -37,42 +39,6 @@ function listGames(args) {
       }
       else {
         console.log(Formatters.listGamesTable(gameList))
-      }
-    })
-}
-
-/*
-
-  show the details of an existing game
-
-   * call the loadGame method of the state library
-   * format the output
-
-  args:
-
-   * url - the url of the restAPi server
-   * name - the name of the existing game
-   * format - the format for the output
-  
-*/
-function showGame(args) {
-  const state = State(args.url)
-
-  state
-    .loadGame(args.name)
-    .then(function(gameData) {
-
-      // if the game is not found then error
-      if(!gameData) {
-        console.error(`There was no game found with the name: ${args.name}`)
-        process.exit(1)
-      }
-
-      if(args.format == 'json') {
-        console.log(Formatters.asJson(gameData))
-      }
-      else {
-        console.log(Formatters.gameToString(gameData))
       }
     })
 }
@@ -96,8 +62,8 @@ function showGame(args) {
    * format - the format for the output
   
 */
-function createGame(args) {
-  
+function registerUser(args) {
+
   const state = State(args.url)
 
   // load the keys from disk based on the keyDir and keyName
@@ -106,14 +72,21 @@ function createGame(args) {
   // create a signer using our private key
   const signer = Transaction.createSigner(keys.private)
 
-  // create a payload representing a create new game action
-  const payload = [args.name, 'create', ''].join(',')
+  const payload = JSON.stringify({
+    action: 'register',
+    person_details: {
+      name: args.name
+    }
+  })
+
+  //const address = Address.personAddress(args.name)
+  const address = Address.personAddress(args.name)
 
   // create the signed transaction ready to send
   // this will return the raw binary we will send to the rest api
   const batchListBytes = Transaction.singleTransactionBytes({
     signer: signer,
-    gameName: args.name,
+    address: address,
     payload: payload,
   })
 
@@ -124,99 +97,6 @@ function createGame(args) {
     .catch(_errorHandler)
 }
 
-/*
-
-  take a space in an existing game
-
-   * check the keys exist
-   * create a new transaction
-   * call the playGame method of the state library
-   * format the output
-
-  args:
-
-   * name - the name of the new game
-   * space - the space to take in the game
-   * url - the url of the restAPi server
-   * keyDir - the directory the keys live in
-   * keyName - the name of the key to use when submitting the transaction
-   * wait - whether to wait for the transaction status to complete or error
-   * format - the format for the output
-  
-*/
-function playGame(args) {
-  
-  const state = State(args.url)
-
-  // load the keys from disk based on the keyDir and keyName
-  const keys = keyUtils.getKeys(args.keyDir, args.keyName)
-
-  // create a signer using our private key
-  const signer = Transaction.createSigner(keys.private)
-
-  // create a payload representing a create new game action
-  const payload = [args.name, 'take', args.space].join(',')
-
-  // create the signed transaction ready to send
-  // this will return the raw binary we will send to the rest api
-  const batchListBytes = Transaction.singleTransactionBytes({
-    signer: signer,
-    gameName: args.name,
-    payload: payload,
-  })
-
-  // send the batch list bytes to the rest api
-  state
-    .sendBatch(batchListBytes)
-    .then(_submitBatchListHandler(state, args.format, args.wait))
-    .catch(_errorHandler)
-}
-
-/*
-
-  delete an existing game
-
-   * check the keys exist
-   * create a new transaction
-   * call the deleteGame method of the state library
-   * format the output
-
-  args:
-
-   * name - the name of the new game
-   * url - the url of the restAPi server
-   * keyDir - the directory the keys live in
-   * keyName - the name of the key to use when submitting the transaction
-   * wait - whether to wait for the transaction status to complete or error
-   * format - the format for the output
-  
-*/
-function deleteGame(args) {
-  const state = State(args.url)
-
-  // load the keys from disk based on the keyDir and keyName
-  const keys = keyUtils.getKeys(args.keyDir, args.keyName)
-
-  // create a signer using our private key
-  const signer = Transaction.createSigner(keys.private)
-
-  // create a payload representing a create new game action
-  const payload = [args.name, 'delete', ''].join(',')
-
-  // create the signed transaction ready to send
-  // this will return the raw binary we will send to the rest api
-  const batchListBytes = Transaction.singleTransactionBytes({
-    signer: signer,
-    gameName: args.name,
-    payload: payload,
-  })
-
-  // send the batch list bytes to the rest api
-  state
-    .sendBatch(batchListBytes)
-    .then(_submitBatchListHandler(state, args.format, args.wait))
-    .catch(_errorHandler)
-}
 
 // generic handler for submitted transactions
 // if the wait flag is set - we wait for the 
@@ -271,9 +151,6 @@ function _errorHandler(err) {
 }
 
 module.exports = {
-  listGames: listGames,
-  createGame: createGame,
-  showGame: showGame,
-  playGame: playGame,
-  deleteGame: deleteGame,
+  listPeople: listPeople,
+  registerUser: registerUser,
 }

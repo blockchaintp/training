@@ -18,7 +18,7 @@ const { TransactionProcessor } = require('sawtooth-sdk/processor')
 
 // the handler is our implementation of transaction processor
 // we add it to the TransactionProcessor
-const XOHandler = require('./handler')
+const VoteHandler = require('./handler')
 
 // import the transaction processor utils library
 const tpUtils = require('./utils')
@@ -50,7 +50,7 @@ const transactionProcessor = new TransactionProcessor(args.validator)
 
 // add our XO handler to the base transactionProcessor
 // this will register the XO transaction family and the version
-transactionProcessor.addHandler(new XOHandler())
+transactionProcessor.addHandler(new VoteHandler())
 
 // override the _handleShutdown to give enough time to unregsiter the tp
 // from the validator - useful in development so we can restart the process

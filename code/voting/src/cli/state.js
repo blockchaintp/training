@@ -39,57 +39,32 @@ const WAIT_BATCH_TIME = 100
 // so it can make HTTP requests to it
 function State(restApiUrl) {
 
-  // load the list of games using the XO_NAMESPACE prefix address
-  function loadGames() {
+  // load the list of games using the VOTE_NAMESPACE prefix address
+  function loadPeople() {
     return RestApi
-      .getState(restApiUrl, Address.XO_NAMESPACE)
+      .getState(restApiUrl, Address.allPersonAddress())
       .then(function(body) {
 
         // the body of a state response will have the an array of addresses with their state entries
         // let's map the raw game data into a processed version using the
         // encoding library
         return body.data
-          .map(function(gameStateEntry) {
+          .map(function(personStateEntry) {
+
+            console.log('-------------------------------------------');
+            console.log('-------------------------------------------');
+            console.dir(personStateEntry)
 
             // get the raw base64 data for the state entry
-            const base64Data = gameStateEntry.data
+            //const base64Data = gameStateEntry.data
 
             // convert it from base64 into a CSV string
-            const rawGameData = Encoding.fromBase64(base64Data)
+            //const rawGameData = Encoding.fromBase64(base64Data)
 
             // convert the CSV string into a game object
-            return Encoding.deserialize(rawGameData)
+            //return Encoding.deserialize(rawGameData)
+            return null
           })
-      })
-  }
-
-  // load a single game based on its name
-  // we use the specific storage address for the game to do this
-  function loadGame(name) {
-    const gameAddress = Address.gameAddress(name)
-    return RestApi
-      .getState(restApiUrl, gameAddress)
-      .then(function(body) {
-
-        // the body of a state response will have the an array of addresses with their state entries
-        // let's extract the data for this one game
-
-        const gameStateEntry = body.data.filter(function(entry) {
-          return entry.address == gameAddress
-        })[0]
-
-        if(!gameStateEntry) return null
-
-        // now let's process the game data from the raw base64 bytes we have loaded
-
-        // get the raw base64 data for the state entry
-        const base64Data = gameStateEntry.data
-
-        // convert it from base64 into a CSV string
-        const rawGameData = Encoding.fromBase64(base64Data)
-
-        // convert the CSV string into a game object
-        return Encoding.deserialize(rawGameData)
       })
   }
 
@@ -152,8 +127,7 @@ function State(restApiUrl) {
   }
 
   return {
-    loadGames: loadGames,
-    loadGame: loadGame,
+    loadPeople: loadPeople,
     sendBatch: sendBatch,
     waitBatch: waitBatch,
   }

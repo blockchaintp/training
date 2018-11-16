@@ -34,81 +34,142 @@ const Address = require('../shared/address')
 // state of a game into/from a single string
 const Encoding = require('../shared/encoding')
 
+const { InvalidTransaction, InternalError } = require('sawtooth-sdk/processor/exceptions')
+
 // the main library constructor which accepts the SDK context object
-function XOState(context) {
+function VotingState(context) {
 
-  // load the game that is currently saved under the given name
-  // create the address using the shared address library
-  // then call getState before deserializing the found entry
-  // this function returns a Promise to be resolved by the callee
-  function getGame(name) {
+  function listPeople() {
+    const address = Address.allPersonAddress()
 
-    // get the address for the given game name
-    const address = Address.gameAddress(name)
-
-    // call the 'getState' of the validator to load the data
-    // at the game address
     return context.getState([address], TIMEOUT)
       .then(function(addressValues) {
+
+        // YAY - we have an answer from the validator
+        // addressData = {'ADDRESS': 'DATA'}
+
+        const peopleArray = Object
+          .keys(addressValues)
+          .map(personAddress => {
+            const binaryPersonData = addressValues[personAddress] 
+            const stringPersonData = binaryPersonData.toString()
+            return Encoding.deserialize(stringPersonData)
+          })
+
+        return peopleArray
+      })
+  }
+
+  function getPerson(name) {
+    const address = Address.personAddress(name)
+
+    return context.getState([address], TIMEOUT)
+      .then(function(addressValues) {
+
+        // YAY - we have an answer from the validator
 
         // addressData = {'ADDRESS': 'DATA'}
         // addressValues is an object of found state
         // the key is the actual address of the data
         // the value is a binary value of the actual state
-        
-        // load the data for our actual game address
-        // this is a binary value
-        const binaryAddressData = addressValues[address]
+
+        const binaryPersonData = addressValues[address]
 
         // convert the binary value into a string
-        const stringAddressData = binaryAddressData.toString()
+        const stringPersonData = binaryPersonData.toString()
 
         // return a game object that is deserialized from the given string
-        return Encoding.deserialize(stringAddressData)
+        return Encoding.deserialize(stringPersonData)
       })
   }
 
-  // set the game with the given name
-  // we serialize the game data and write it to the validator
-  // at the address constructed using the given game name
-  function setGame(name, gameObject) {
-    
-    // first we serialize the gameObject into a CSV string using the serialize function
-    const gameCSVString = Encoding.serialize(gameObject)
+  function setPerson(name, personObject) {
+    const address = Address.personAddress(name)
+
+    const personJSONString = Encoding.serialize(personObject)
 
     // turn the CSV string into binary data
-    const gameBinaryData = Buffer.from(gameCSVString)
+    const personBinaryData = Buffer.from(personJSONString)
 
-    // get the address for the given game name
-    const address = Address.gameAddress(name)
-
-    // create a map of address -> data that we will send to the validator
     const stateEntries = {
-      [address]: gameBinaryData
+      [address]: personBinaryData
     }
 
-    // send the new game state to the validator
-    // return the promise to the caller of this function
+    console.log(`writing new state entries`)
+    console.dir(stateEntries)
+
     return context.setState(stateEntries, TIMEOUT)
   }
 
-  // delete the game with the given name
-  // this uses the deleteState function of the core SDK
-  // we use an address constructed using the given game name
-  function deleteGame(name) {
-    // get the address for the given game name
-    const address = Address.gameAddress(name)
 
-    // call the deleteState method on the validator
-    return context.deleteState([address], TIMEOUT)
+  function listProposals() {
+    const address = Address.allProposalAddress()
+
+    return context.getState([address], TIMEOUT)
+      .then(function(addressValues) {
+
+        // YAY - we have an answer from the validator
+        // addressData = {'ADDRESS': 'DATA'}
+
+        const proposalArray = Object
+          .keys(addressValues)
+          .map(proposalAddress => {
+            const binaryProposalData = addressValues[proposalAddress] 
+            const stringProposalData = binaryProposalData.toString()
+            return Encoding.deserialize(stringProposalData)
+          })
+
+        return proposalArray
+      })
+  }
+
+  function getProposal(name) {
+    const address = Address.proposalAddress(name)
+
+    return context.getState([address], TIMEOUT)
+      .then(function(addressValues) {
+
+        // YAY - we have an answer from the validator
+
+        // addressData = {'ADDRESS': 'DATA'}
+        // addressValues is an object of found state
+        // the key is the actual address of the data
+        // the value is a binary value of the actual state
+
+        const binaryProposalData = addressValues[address]
+
+        // convert the binary value into a string
+        const stringProposalData = binaryProposalData.toString()
+
+        // return a game object that is deserialized from the given string
+        return Encoding.deserialize(stringProposalData)
+      })
+  }
+
+  function setProposal(proposalObject) {
+    const address = Address.proposalAddress(proposalObject.name)
+
+    const proposalJSONString = Encoding.serialize(proposalObject)
+
+    // turn the CSV string into binary data
+    const proposalBinaryData = Buffer.from(proposalJSONString)
+
+    const stateEntries = {
+      [address]: proposalBinaryData
+    }
+
+    return context.setState(stateEntries, TIMEOUT)
   }
 
   // return an object with each of the state methods
   return {
-    getGame: getGame,
-    setGame: setGame,
-    deleteGame: deleteGame,
+    listPeople: listPeople,
+    getPerson: getPerson,
+    setPerson: setPerson,
+    listProposals: listProposals,
+    getProposal: getProposal,
+    setProposal: setProposal,
   }
 }
 
-module.exports = XOState
+module.exports = VotingState

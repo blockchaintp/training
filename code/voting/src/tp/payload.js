@@ -33,29 +33,24 @@ function processPayload(binaryPayload) {
   // first concert the binary payload into a string
   const stringPayload = binaryPayload.toString()
 
-  // now split based on comma to get the individual parts of the payload
-  const payloadParts = stringPayload.split(',')
+  let votePayload = null
 
-  // check the payload has the correct number of bytes
-  if (payloadParts.length !== 3) throw new InvalidTransaction('Invalid payload serialization')
-
-  // turn the array of string values into an object with key,value pairs
-  const xoPayload = {
-    name: payloadParts[0],
-    action: payloadParts[1],
-    space: payloadParts[2],
+  try {
+    votePayload = JSON.parse(stringPayload)
+  } catch(e) {
+    throw InvalidTransaction(`The JSON payload could not be processed: ${e.toString()}`)
   }
 
-  // check that a name has been provided
-  if (!xoPayload.name) throw new InvalidTransaction('Name is required')
+  // TODO: validate this payload depending on the action
 
-  // check that the name does not contain the | character
-  if (xoPayload.name.indexOf('|') !== -1) throw new InvalidTransaction('Name cannot contain "|"')
-    
-  // checke that an action has been defined
-  if (!xoPayload.action) throw new InvalidTransaction('Action is required')
-    
-  return xoPayload
+  if(votePayload.action == 'register') {
+    if(!votePayload.person_details) {
+      throw InvalidTransaction(`for a register action - you must include a person_details field`)
+    }
+  }
+
+  // TODO: lots more payload validation 
+  return votePayload
 }
 
 module.exports = processPayload

@@ -18,29 +18,14 @@ const handlers = require('./handlers')
 
 yargs
   .command({
-    command: 'list',
-    desc: 'List the current XO games',
-    handler: handlers.listGames,
+    command: 'list-people',
+    desc: 'List the current users',
+    handler: handlers.listPeople,
   })
   .command({
-    command: 'create <name>',
-    desc: 'Create a new XO game',
-    handler: handlers.createGame,
-  })
-  .command({
-    command: 'show <name>',
-    desc: 'Display the current status of an XO game',
-    handler: handlers.showGame,
-  })
-  .command({
-    command: 'take <name> <space>',
-    desc: 'Take a place in an existing XO game',
-    handler: handlers.playGame,
-  })
-  .command({
-    command: 'delete <name>',
-    desc: 'Delete an existing XO game',
-    handler: handlers.deleteGame,
+    command: 'register <name>',
+    desc: 'Register yourself',
+    handler: handlers.registerUser,
   })
   .option('url', {
     describe: 'the url to connect to the rest api',

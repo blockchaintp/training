@@ -26,21 +26,18 @@ function createTransaction(opts) {
     signer,
 
     // the name of the game we are targeting with this transaction
-    gameName,
+    address,
 
     // the payload of the transaction
     payload,
   } = opts
 
-  // construct the address for the game based on it's name
-  const address = Address.gameAddress(gameName)
-
   // create the raw bytes for the transaction header
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
 
     // include the transactin family name and version 
-    familyName: Address.XO_FAMILY,
-    familyVersion: Address.XO_VERSION,
+    familyName: Address.VOTE_FAMILY,
+    familyVersion: Address.VOTE_VERSION,
 
     // specific the inputs and output addresses this transaction will use
     // this is used by the validator to wait for required blocks
@@ -136,7 +133,7 @@ function singleTransactionBytes(opts) {
     signer,
 
     // the name of the game we are targeting with this transaction
-    gameName,
+    address,
 
     // the payload of the transaction
     payload,
@@ -145,7 +142,7 @@ function singleTransactionBytes(opts) {
   // create the transaction
   const transaction = createTransaction({
     signer: signer,
-    gameName: gameName,
+    address: address,
     payload: payload,
   })
 
