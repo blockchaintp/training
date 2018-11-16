@@ -5,7 +5,7 @@ Resources to deliver training.
  * [eventbright page](https://www.eventbrite.com/e/hyperledger-sawtooth-blockchain-application-developer-workshop-tickets-51567876908)
  * [published schedule](https://s3.eu-west-2.amazonaws.com/btp-website-downloads/Workshops/BTP+Hyperledger+Sawtooth+Application+Developer+Workshop+-+Singapore+Fintech+Festival.pdf)
 
-[multiplayer xo](http://ip172-19-0-8-bfme96s9cs9g00cufvo0-8081.direct.labs.play-with-docker.com/)
+[hangout link](https://meet.google.com/goo-mtfb-ihp)
 
 ## location
 
