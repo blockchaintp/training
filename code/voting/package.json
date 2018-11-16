@@ -1,0 +1,21 @@
+{
+  "name": "xo_javascript",
+  "version": "1.0.0",
+  "description": "An implementation of the xo transaction family using the sawtooth JS sdk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "async": "^2.6.1",
+    "axios": "^0.18.0",
+    "cbor": "^3.0.0",
+    "minimist": "^1.2.0",
+    "sawtooth-sdk": "^1.0.5",
+    "table": "^5.1.0",
+    "yargs": "^12.0.2"
+  }
+}
