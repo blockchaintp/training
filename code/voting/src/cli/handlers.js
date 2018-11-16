@@ -31,14 +31,14 @@ function listPeople(args) {
   const state = State(args.url)
 
   state
-    .loadGames()
-    .then(function(gameList) {
+    .loadPeople()
+    .then(function(peopleList) {
 
       if(args.format == 'json') {
-        console.log(Formatters.asJson(gameList))
+        console.log(Formatters.asJson(peopleList))
       }
       else {
-        console.log(Formatters.listGamesTable(gameList))
+        console.log(Formatters.listPeopleTable(peopleList))
       }
     })
 }

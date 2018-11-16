@@ -51,19 +51,11 @@ function State(restApiUrl) {
         return body.data
           .map(function(personStateEntry) {
 
-            console.log('-------------------------------------------');
-            console.log('-------------------------------------------');
-            console.dir(personStateEntry)
+            const personDataString = Encoding.fromBase64(personStateEntry.data)
 
-            // get the raw base64 data for the state entry
-            //const base64Data = gameStateEntry.data
+            const personData = Encoding.deserialize(personDataString)
 
-            // convert it from base64 into a CSV string
-            //const rawGameData = Encoding.fromBase64(base64Data)
-
-            // convert the CSV string into a game object
-            //return Encoding.deserialize(rawGameData)
-            return null
+            return personData
           })
       })
   }

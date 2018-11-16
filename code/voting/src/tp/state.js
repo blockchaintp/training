@@ -96,7 +96,7 @@ function VotingState(context) {
     }
 
     console.log(`writing new state entries`)
-    console.dir(stateEntries)
+    console.dir(Object.keys(stateEntries))
 
     return context.setState(stateEntries, TIMEOUT)
   }
