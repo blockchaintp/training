@@ -59,3 +59,5 @@ transactionProcessor._handleShutdown = tpUtils.handleShutdown(transactionProcess
 // start the transactionProcessor - this will initiate and register the
 // transaction processor with the validator
 transactionProcessor.start()
+
+// The tp has now started
