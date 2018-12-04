@@ -29,6 +29,11 @@ const styles = theme => {
     },
     inlineCode: {
       color: '#D81C38',
+    },
+    image: {
+      maxWidth: '800px',
+      border: '1px solid #ccc',
+      boxShadow: '10px 10px 20px 0px rgba(0,0,0,0.2)',
     }
   }
 }

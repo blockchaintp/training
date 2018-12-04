@@ -2,18 +2,22 @@
 
 Resources to deliver training.
 
- * [eventbright page](https://www.eventbrite.com/e/hyperledger-sawtooth-blockchain-application-developer-workshop-tickets-51567876908)
- * [published schedule](https://s3.eu-west-2.amazonaws.com/btp-website-downloads/Workshops/BTP+Hyperledger+Sawtooth+Application+Developer+Workshop+-+Singapore+Fintech+Festival.pdf)
+ * [cyberport page](https://www.cyberport.hk/en/about_cyberport/cyberport_entrepreneurs/entrepreneurs_news/5654)
+ * [registration page](https://app.eventxtra.com/registrations/b870843c-69c2-450a-9952-1b7bb8ba2e3f)
+ * [published schedule](https://s3.eu-west-2.amazonaws.com/btp-website-downloads/Workshops/BTP+Hyperledger+Sawtooth+Application+Developer+Workshop+-+Cyberport+HK.pdf)
 
-[hangout link](https://meet.google.com/goo-mtfb-ihp)
+[hangout link](https://meet.google.com/jeh-iaah-hhh)
 
 ## location
 
 ```
-LaunchPad @ one-North
-Blk 71 Ayer Rajah Crescent, #04-12
-Singapore, 139951
-Singapore
+Breakout Area,
+Entrepreneurship Centre, 
+L5, 
+Core F, 
+Cyberport 3, 
+100 Cyberport Road, 
+Hong Kong
 ```
 
 ## pre-requisites
@@ -25,7 +29,7 @@ Participants should bring a laptop ideally installed with Docker and Docker comp
 
 ## schedule
 
-**Day 1 - November 15th**
+**Day 1 - December 5th**
 
 ```
 09:30-10:00 Intros and Objectives
@@ -45,7 +49,7 @@ transaction processor code to ensure that they grasp the key concepts
 ```
 
 
-**Day 2 - November 16th**
+**Day 2 - December 6th**
 
 ```
 09:30-10:00 Day 1 recap

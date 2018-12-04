@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown'
 import MarkdownCodeBlock from './MarkdownCodeBlock'
 import MarkdownBlockQuote from './MarkdownBlockQuote'
 import MarkdownLink from './MarkdownLink'
+import MarkdownImage from './MarkdownImage'
 import MarkdownInlineCode from './MarkdownInlineCode'
 import styles from '../styles/markdown'
 
@@ -31,6 +32,7 @@ class Markdown extends React.Component {
             link: MarkdownLink,
             blockquote: MarkdownBlockQuote,
             inlineCode: MarkdownInlineCode,
+            image: MarkdownImage,
           }}
         />
       </div>
