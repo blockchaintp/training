@@ -1,14 +1,10 @@
 'use strict'
 
-// import the unregister and message types from the SDK
 const {
   TpUnregisterRequest,
   Message,
 } = require('sawtooth-sdk/protobuf')
 
-// used to override the core SDK shutdown method to make sure we
-// give enough time to unregister this tp from the validator
-// this makes it possible to restart the tp in the case of errors
 function handleShutdown(transactionProcessor) {
   return function() {
     console.log('sending unregister request')

@@ -1,19 +1,8 @@
 #!/usr/bin/env node
 'use strict'
 
-/*
-
-  the main entry point of the client
-
-  we process the command line arguments and call the relevent command
-
-  the rest-api URL is checked 
-  
-*/
-
 const yargs = require('yargs')
 
-// import the handlers that will execute each command
 const handlers = require('./handlers')
 
 yargs

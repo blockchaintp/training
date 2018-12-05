@@ -1,10 +1,5 @@
 'use strict'
 
-/*
-
-  utilities for managing the encoding of the state
-  
-*/
 function deserialize(jsonString) {
 
   // if there is no data then return nothing

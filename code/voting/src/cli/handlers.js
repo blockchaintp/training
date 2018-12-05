@@ -14,19 +14,6 @@ const Transaction = require('./transaction')
 
 const Address = require('../shared/address')
 
-/*
-
-  the list command handler
-
-   * call the loadGames method of the state library
-   * format the output
-
-  args:
-
-   * url - the url of the restAPi server
-   * format - the format for the output
-  
-*/
 function listPeople(args) {
   const state = State(args.url)
 
@@ -43,33 +30,10 @@ function listPeople(args) {
     })
 }
 
-/*
-
-  the create command handler
-
-   * check the keys exist
-   * create a new transaction
-   * call the createGame method of the state library
-   * format the output
-
-  args:
-
-   * name - the name of the new game
-   * url - the url of the restAPi server
-   * keyDir - the directory the keys live in
-   * keyName - the name of the key to use when submitting the transaction
-   * wait - whether to wait for the transaction status to complete or error
-   * format - the format for the output
-  
-*/
 function registerUser(args) {
 
   const state = State(args.url)
-
-  // load the keys from disk based on the keyDir and keyName
   const keys = keyUtils.getKeys(args.keyDir, args.keyName)
-
-  // create a signer using our private key
   const signer = Transaction.createSigner(keys.private)
 
   const payload = JSON.stringify({
@@ -79,7 +43,6 @@ function registerUser(args) {
     }
   })
 
-  //const address = Address.personAddress(args.name)
   const address = Address.personAddress(args.name)
 
   // create the signed transaction ready to send

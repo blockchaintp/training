@@ -205,7 +205,14 @@ class XOHandler extends TransactionHandler {
         if (game.player1 === '') {
           game.player1 = player
         } else if (game.player2 === '') {
-          game.player2 = player
+
+          // NOTE: player is the public key that signed this transaction
+          if(player === game.player1) {
+            throw new InvalidTransaction('Invalid Action: You cannot play yourself - use a different key.')
+          }
+          else {
+            game.player2 = player
+          }
         }
 
         // get an array of characters representing each space on the board
