@@ -104,6 +104,30 @@ services:
     #entrypoint: tail -f /dev/null
     entrypoint: node src/tp/index.js --validator tcp://validator:4004
 
+  # a utility container for the XO CLI exercise
+  # we are using local code for this so we can edit it
+  xo-tp-cli:
+    build:
+      context: ../xo
+    container_name: sawtooth-xo-cli
+    depends_on:
+      - validator
+    restart: always
+    networks:
+      - sawtooth-dev
+    # mount the code for our tp into the container
+    # this makes it easy to edit the code on our computer
+    # without having to rebuild the container image each time
+    # also mount the keys from the shell container so we can
+    # read the keys for submitting transactions from the CLI
+    volumes:
+      - ../xo/src:/app/src
+      - ./.keys:/root/.sawtooth/keys
+    # loop forever so we can manually enter the container to run the tp
+    # this is useful for development where we want to restart the tp
+    # after having made code changes
+    entrypoint: tail -f /dev/null
+
   # a web UI frontend for the xo tp
   # it will communicate to the TP via the sawtooth rest api
   xo-ui:
