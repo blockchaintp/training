@@ -165,5 +165,5 @@ services:
     # loop forever so we can manually enter the container to run the tp
     # this is useful for development where we want to restart the tp
     # after having made code changes
-    #entrypoint: tail -f /dev/null
-    entrypoint: node src/tp/index.js --validator tcp://validator:4004
+    entrypoint: tail -f /dev/null
+    #entrypoint: node src/tp/index.js --validator tcp://validator:4004
