@@ -70,3 +70,32 @@ mount `~/.sawtooth/keys` to keep all the files
    24  seth show receipt 8c20337bd6085da61b0758fb45facba15ac54399387d8a54c1097b20ca4fc2413904ccf94ca26bc610e740e34c4aa7e5c6b51ea9354bf75a49b2879a8359e262
    25  history
 ```
+
+Example contract:
+
+```
+pragma solidity ^0.4.0;
+
+contract intkey {
+  mapping (uint => uint) intmap;
+
+  event Set(uint key, uint value);
+
+  function set(uint key, uint value) public {
+    intmap[key] = value;
+    emit Set(key, value);
+  }
+
+  function inc(uint key) public {
+    intmap[key] = intmap[key] + 1;
+  }
+
+  function dec(uint key) public {
+    intmap[key] = intmap[key] - 1;
+  }
+
+  function get(uint key) public constant returns (uint retVal) {
+    return intmap[key];
+  }
+}
+```
