@@ -43,13 +43,15 @@ function registerUser(args) {
     }
   })
 
-  const address = Address.personAddress(args.name)
+  const inputs = Address.personAddress(keys.public)
+  const outputs = Address.personAddress(keys.public)
 
   // create the signed transaction ready to send
   // this will return the raw binary we will send to the rest api
   const batchListBytes = Transaction.singleTransactionBytes({
     signer: signer,
-    address: address,
+    inputs: [inputs],
+    outputs: [outputs],
     payload: payload,
   })
 

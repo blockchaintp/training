@@ -8,54 +8,25 @@ const { InvalidTransaction, InternalError } = require('sawtooth-sdk/processor/ex
 
 function VotingState(context) {
 
-  function listPeople() {
-    const address = Address.allPersonAddress()
-
-    return context.getState([address], TIMEOUT)
-      .then(function(addressValues) {
-
-        const peopleArray = Object
-          .keys(addressValues)
-          .map(personAddress => {
-            const binaryPersonData = addressValues[personAddress] 
-            const stringPersonData = binaryPersonData.toString()
-            return Encoding.deserialize(stringPersonData)
-          })
-
-        return peopleArray
-      })
-  }
-
-  function getPerson(name) {
-    const address = Address.personAddress(name)
+  function getPerson(publicKey) {
+    const address = Address.personAddress(publicKey)
 
     return context.getState([address], TIMEOUT)
       .then(function(addressValues) {
 
         const binaryPersonData = addressValues[address]
+
+        if(!binaryPersonData) {
+          return null
+        }
         const stringPersonData = binaryPersonData.toString()
 
         return Encoding.deserialize(stringPersonData)
       })
   }
 
-  // return a person object from a publicKey
-  // this means we can check the same key
-  // cannot register twice as well as load
-  // the person name from just the key
-  function getPersonFromPublicKey(publicKey) {
-    return listPeople()
-      .then(function(people) {
-
-        // filter the list of people down to a single person
-        // that has the given publicKey
-
-        return people.filter(person => person.publicKey == publicKey)[0]
-      })
-  }
-
-  function setPerson(name, personObject) {
-    const address = Address.personAddress(name)
+  function setPerson(publicKey, personObject) {
+    const address = Address.personAddress(publicKey)
 
     const personJSONString = Encoding.serialize(personObject)
     const personBinaryData = Buffer.from(personJSONString)
@@ -116,7 +87,6 @@ function VotingState(context) {
 
   // return an object with each of the state methods
   return {
-    listPeople: listPeople,
     getPerson: getPerson,
     setPerson: setPerson,
     listProposals: listProposals,

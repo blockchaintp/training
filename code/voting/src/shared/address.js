@@ -17,8 +17,8 @@ const PROPOSAL_PATH = 'proposal'
 const PERSON_NAMESPACE = createHash(PERSON_PATH).substring(0, 4)
 const PROPOSAL_NAMESPACE = createHash(PROPOSAL_PATH).substring(0, 4)
 
-function personAddress(name) {
-  return VOTE_NAMESPACE + PERSON_NAMESPACE + createHash(name).substring(0, 60)
+function personAddress(publicKey) {
+  return VOTE_NAMESPACE + PERSON_NAMESPACE + createHash(publicKey).substring(0, 60)
 }
 
 function proposalAddress(name) {

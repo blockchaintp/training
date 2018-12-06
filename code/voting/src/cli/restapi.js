@@ -20,6 +20,9 @@ const axios = require('axios')
 // load the state entries under a given address
 function getState(restApiUrl, address) {
   const url = `${restApiUrl}/state?address=${address}`
+
+  console.log('-------------------------------------------');
+  console.log(url)
   return axios
     .get(url)
     .then(function(response) {

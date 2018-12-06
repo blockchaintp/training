@@ -42,12 +42,18 @@ class VoteHandler extends TransactionHandler {
       throw new InvalidTransaction('Invalid Action: payload must have a person_details.name field')
     }
 
-    const newPerson = Object.assign({}, payload.person_details)
-    newPerson.publicKey = userPublicKey
+    return state.getPerson(userPublicKey)
+      .then(function(existingUser) {
+        if(existingUser) {
+          throw new InvalidTransaction('Invalid Action: that public key has already been registered')
+        }
 
-    console.log(`creating new user ${newPerson.name}`)
+        const newPerson = Object.assign({}, payload.person_details)
+        newPerson.publicKey = userPublicKey
 
-    return state.setPerson(newPerson.name, newPerson)
+        console.log(`creating new user ${newPerson.name}`)
+        return state.setPerson(newPerson.publicKey, newPerson)
+      })
   }
 
 }

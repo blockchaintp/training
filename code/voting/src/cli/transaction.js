@@ -26,7 +26,8 @@ function createTransaction(opts) {
     signer,
 
     // the name of the game we are targeting with this transaction
-    address,
+    inputs,
+    outputs,
 
     // the payload of the transaction
     payload,
@@ -42,8 +43,8 @@ function createTransaction(opts) {
     // specific the inputs and output addresses this transaction will use
     // this is used by the validator to wait for required blocks
     // and to decide on parallel execution constaints
-    inputs: [address],
-    outputs: [address],
+    inputs: inputs,
+    outputs: outputs,
 
     // include the hex of the public key we are using to sign this transaction
     signerPublicKey: signer.getPublicKey().asHex(),
@@ -133,7 +134,8 @@ function singleTransactionBytes(opts) {
     signer,
 
     // the name of the game we are targeting with this transaction
-    address,
+    inputs,
+    outputs,
 
     // the payload of the transaction
     payload,
@@ -142,7 +144,8 @@ function singleTransactionBytes(opts) {
   // create the transaction
   const transaction = createTransaction({
     signer: signer,
-    address: address,
+    inputs: inputs,
+    outputs: outputs,
     payload: payload,
   })
 
