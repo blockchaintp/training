@@ -22,7 +22,6 @@ function personAddress(name) {
 }
 
 function proposalAddress(name) {
-  const personPath = `.proposal.${name}`
   return VOTE_NAMESPACE + PROPOSAL_NAMESPACE + createHash(name).substring(0, 60)
 }
 
@@ -35,9 +34,12 @@ function allProposalAddress() {
 }
 
 module.exports = {
+  createHash,
   VOTE_FAMILY,
   VOTE_VERSION,
   VOTE_NAMESPACE,
+  PERSON_NAMESPACE,
+  PROPOSAL_NAMESPACE,
   personAddress,
   proposalAddress,
   allPersonAddress,

@@ -3,15 +3,23 @@
 
 ### data structure
 
+the structure of our data is:
+
 ```
 proposal
   name
-  description
+  proposal
+  result - one of VOTING, PASSED, REJECTED, TIE
   votes
+  {
+    "bob": "yes",
+    "alice": "no",
+    "harry": "yes",
+  }
 
 people
   name
-  key
+  publicKey
 ```
 
 ### addressing
