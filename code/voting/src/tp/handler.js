@@ -34,7 +34,6 @@ class VoteHandler extends TransactionHandler {
   }
 
   registerUser (state, payload, userPublicKey) {
-
     if(!payload.person_details) {
       throw new InvalidTransaction('Invalid Action: payload must have a person_details field')
     }

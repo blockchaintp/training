@@ -39,6 +39,21 @@ function VotingState(context) {
       })
   }
 
+  // return a person object from a publicKey
+  // this means we can check the same key
+  // cannot register twice as well as load
+  // the person name from just the key
+  function getPersonFromPublicKey(publicKey) {
+    return listPeople()
+      .then(function(people) {
+
+        // filter the list of people down to a single person
+        // that has the given publicKey
+
+        return people.filter(person => person.publicKey == publicKey)[0]
+      })
+  }
+
   function setPerson(name, personObject) {
     const address = Address.personAddress(name)
 

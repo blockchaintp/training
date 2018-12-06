@@ -32,6 +32,12 @@ voting.
 
 ### transaction payloads
 
- * register_for_voting
+ * register
  * create_proposal
  * vote
+
+### read only methods
+
+ * list people
+ * list proposals
+ * view proposal

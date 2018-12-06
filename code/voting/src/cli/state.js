@@ -25,7 +25,6 @@ function State(restApiUrl) {
             const personDataString = Encoding.fromBase64(personStateEntry.data)
 
             const personData = Encoding.deserialize(personDataString)
-
             return personData
           })
       })
