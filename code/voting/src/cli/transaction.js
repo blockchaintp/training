@@ -1,7 +1,7 @@
 'use strict'
 /*
 
-  a library to create a new signed transaction for the XO family
+  a library to create a new signed transaction for the Voting family
   
 */
 
@@ -50,7 +50,7 @@ function createTransaction(opts) {
     signerPublicKey: signer.getPublicKey().asHex(),
     batcherPublicKey: signer.getPublicKey().asHex(),
 
-    // there are no dependencies for an XO transaction
+    // there are no dependencies for an Voting transaction
     dependencies: [],
 
     // create a hash of the payload
@@ -72,7 +72,7 @@ function createTransaction(opts) {
     // the signature of the header bytes we signed above
     headerSignature: signature,
 
-    // the binary payload - XO uses utf8 CSV strings so we are
+    // the binary payload - Voting uses utf8 CSV strings so we are
     // creating the binary payload from a UTF8 string
     // on other transaction processors, you can used your own form
     // of encoding

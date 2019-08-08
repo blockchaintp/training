@@ -1,7 +1,7 @@
 {
-  "name": "xo_javascript",
+  "name": "voting_javascript",
   "version": "1.0.0",
-  "description": "An implementation of the xo transaction family using the sawtooth JS sdk",
+  "description": "An implementation of the voting transaction family using the sawtooth JS sdk",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
