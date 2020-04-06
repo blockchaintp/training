@@ -19,7 +19,7 @@
     "@nocodesites/redux-modules": "^0.0.4",
     "@nocodesites/utils": "^0.0.7",
     "async": "^2.6.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "front-matter": "^3.0.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.0",
